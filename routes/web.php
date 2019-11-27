@@ -26,3 +26,9 @@ Route::group([
     Route::get('/list', 'PlayerController@list')->name('players/list');
     Route::get('/fetchFromGameSpark', 'PlayerController@fetchFromGameSpark')->name('players/fetchFromGameSpark');
 });
+
+Route::group([
+    'prefix' => 'tran_players'
+], function () {
+    Route::get('/fetchFromGameSpark', 'TranPlayerController@fetchFromGameSpark')->name('tran_players/fetchFromGameSpark');
+});

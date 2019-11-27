@@ -21,7 +21,8 @@ class PlayerController extends Controller
         return view('pages.players.index');
     }
 
-    public function fetchFromGameSpark() {
+    public function fetchFromGameSpark()
+    {
         $result = $this->fetchPlayerList();
         return response()->json($result);
     }
