@@ -19,4 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/players', 'PlayerController@index')->name('players');
+Route::group([
+    'prefix' => 'players'
+], function () {
+    Route::get('/', 'PlayerController@index')->name('players');
+    Route::get('/list', 'PlayerController@list')->name('players/list');
+    Route::get('/fetchFromGameSpark', 'PlayerController@fetchFromGameSpark')->name('players/fetchFromGameSpark');
+});

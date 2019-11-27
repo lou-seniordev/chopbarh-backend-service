@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Cron\CronJob;
-use DataTables;
+use App\Http\Controllers\Controller;
 use App\Models\Player;
 use Illuminate\Http\Request;
 
 class PlayerController extends Controller
 {
-    use CronJob;
     /**
      * Display a listing of the resource.
      *
@@ -18,24 +16,7 @@ class PlayerController extends Controller
     public function index()
     {
         //
-        return view('pages.players.index');
-    }
-
-    public function fetchFromGameSpark() {
-        $result = $this->fetchPlayerList();
-        return response()->json($result);
-    }
-
-    public function list()
-    {
-        $response = DataTables::of(Player::all())
-            ->addColumn('actions', function($row){
-               return "<button>Action</button>";
-            })
-            ->rawColumns(['actions'])
-            ->make(true);
-
-        return $response;
+        return datatables()->collection(Player::all())->toJson();
     }
 
     /**
