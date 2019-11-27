@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Cron\CronJob;
+use App\Http\Controllers\GameSpark\GameSpark;
 use DataTables;
 use App\Models\Player;
 use Illuminate\Http\Request;
 
 class PlayerController extends Controller
 {
-    use CronJob;
+    use GameSpark;
     /**
      * Display a listing of the resource.
      *

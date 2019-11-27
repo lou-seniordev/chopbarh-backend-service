@@ -9,11 +9,11 @@
 namespace App\Http\Controllers;
 
 
-use App\Http\Controllers\Cron\CronJob;
+use App\Http\Controllers\GameSpark\GameSpark;
 
 class TranPlayerController extends Controller
 {
-    use CronJob;
+    use GameSpark;
 
     public function fetchFromGameSpark()
     {

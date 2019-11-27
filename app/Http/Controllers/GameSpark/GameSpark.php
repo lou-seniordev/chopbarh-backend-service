@@ -6,7 +6,7 @@
  * Time: 19:50
  */
 
-namespace App\Http\Controllers\Cron;
+namespace App\Http\Controllers\GameSpark;
 
 use App\Models\CronData;
 use App\Models\Player;
@@ -15,7 +15,7 @@ use GuzzleHttp;
 use \GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-trait CronJob
+trait GameSpark
 {
 
     private function fetchPlayerList() {
