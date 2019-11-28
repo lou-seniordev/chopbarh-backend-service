@@ -31,7 +31,7 @@ trait GameSpark
         $form = array(
             '@class' => '.LogEventRequest',
             'eventKey' => $eventKey,
-            'playerId' => '5cd59c724c8e100520d660cd',
+            'playerId' =>  env('GAMESPARK_PLAYER_ID', ''),
             'lastPlayerID' => $cronData->lastID
         );
 
@@ -84,7 +84,7 @@ trait GameSpark
         $form = array(
             '@class' => '.LogEventRequest',
             'eventKey' => $eventKey,
-            'playerId' => '5cd59c724c8e100520d660cd',
+            'playerId' =>  env('GAMESPARK_PLAYER_ID', ''),
             'lastTranID' => $cronData->lastID
         );
 
@@ -136,7 +136,7 @@ trait GameSpark
         $form = array(
             '@class' => '.LogEventRequest',
             'eventKey' => $eventKey,
-            'playerId' => '5cd59c724c8e100520d660cd',
+            'playerId' =>  env('GAMESPARK_PLAYER_ID', ''),
             'lastTranID' => $cronData->lastID
         );
 
