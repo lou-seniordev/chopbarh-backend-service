@@ -32,3 +32,9 @@ Route::group([
 ], function () {
     Route::get('/fetchFromGameSpark', 'TranPlayerController@fetchFromGameSpark')->name('tran_players/fetchFromGameSpark');
 });
+
+Route::group([
+    'prefix' => 'transactions'
+], function () {
+    Route::get('/fetchFromGameSpark', 'TransactionController@fetchFromGameSpark')->name('transactions/fetchFromGameSpark');
+});
