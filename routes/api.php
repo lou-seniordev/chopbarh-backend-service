@@ -18,3 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('players', 'PlayerController@index')->name('api/players');
+Route::get('tran_players', 'TranPlayerController@index')->name('api/tran_players');
+Route::get('transactions/game', 'TransactionController@game')->name('api/transactions/game');
+Route::get('transactions/transfer', 'TransactionController@transfer')->name('api/transactions/transfer');
