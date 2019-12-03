@@ -12,4 +12,20 @@ class PlayerController extends Controller
         //
         return datatables()->collection(Player::all())->toJson();
     }
+
+    public function total() {
+        $count = Player::all()->count();
+
+        return response()->json([
+            'totalRegistered' => $count
+        ]);
+    }
+
+    public function active() {
+        $count = Player::where('PlayerStatus', 1)->count();
+
+        return response()->json([
+            'totalRegistered' => $count
+        ]);
+    }
 }
