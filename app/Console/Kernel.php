@@ -14,6 +14,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+        Commands\FetchPlayer::class,
+        Commands\FetchTransaction::class,
+        Commands\FetchTranPlayer::class
     ];
 
     /**
@@ -24,8 +27,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('gamespark:fetchplayer')->everyMinute();
+        $schedule->command('gamespark:fetchtransaction')->everyMinute();
+        $schedule->command('gamespark:fetchtranplayer')->everyMinute();
     }
 
     /**
