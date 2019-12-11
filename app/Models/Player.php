@@ -16,6 +16,9 @@ class Player extends Model
     public $timestamps = false;
 
     public function setDOBAttribute($value) {
-        $this->attributes['DOB'] = Carbon::createFromFormat('d/m/Y', $value);
+        if (sizeof(explode('-', $value)) > 1)
+            $this->attributes['DOB'] = Carbon::createFromFormat('d-m-Y', $value);
+        else
+            $this->attributes['DOB'] = Carbon::createFromFormat('d/m/Y', $value);
     }
 }
