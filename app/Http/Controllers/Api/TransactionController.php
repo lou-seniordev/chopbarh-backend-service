@@ -30,16 +30,35 @@ class TransactionController extends Controller
             return $page;
         });
 
+        $query = TranGame::query();
+
         if ($request->has('start') && $request->has('end')) {
             $start = strtotime($request->start . " 00:00:00") * 1000;
             $end = strtotime($request->end . "23:59:59") * 1000;
 
-            return response()->json(TranGame::where('GAME_START', '>', $start)->where('GAME_START', '<', $end)->paginate($pageSize));
-        } else {
-            $start = 0; $end = 0;
-
-            return response()->json(TranGame::paginate($pageSize));
+            $query = $query->where('GAME_START', '>', $start)->where('GAME_START', '<', $end);
         }
+
+        $totalGamesQuery = clone $query;
+        $totalGames = $totalGamesQuery->where('GAME_TYPE', 'NORMAL')->count();
+
+        $totalTournamentsQuery = clone $query;
+        $totalTournaments = $totalTournamentsQuery->where('GAME_TYPE', 'TOURNAMENT')->count();
+
+        $totalGameRevenuesQuery = clone $query;
+        $totalGameRevenues = $totalGameRevenuesQuery->sum('GAME_TOTAL_REVENUE');
+
+        $paginate = $query->paginate($pageSize);
+
+        $custom = collect([
+            'totalGames' => $totalGames,
+            'totalTournaments' => $totalTournaments,
+            'totalGameRevenues' => $totalGameRevenues
+        ]);
+
+        $data = $custom->merge($paginate);
+
+        return response()->json($data);
 
         /*
         return response()->json([
