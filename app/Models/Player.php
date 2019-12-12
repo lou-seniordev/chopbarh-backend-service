@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 
 class Player extends Model
@@ -16,9 +17,14 @@ class Player extends Model
     public $timestamps = false;
 
     public function setDOBAttribute($value) {
-        if (sizeof(explode('-', $value)) > 1)
-            $this->attributes['DOB'] = Carbon::createFromFormat('d-m-Y', $value);
-        else
+        try {
             $this->attributes['DOB'] = Carbon::createFromFormat('d/m/Y', $value);
+        } catch (Exception $e) {
+            try {
+                $this->attributes['DOB'] = Carbon::createFromFormat('d-m-Y', $value);
+            } catch (Exception $e) {
+                $this->attributes['DOB'] = Carbon::createFromFormat('Y-m-d', $value);
+            }
+        }
     }
 }
