@@ -7,6 +7,7 @@ use App\Models\TranGame;
 use App\Models\TranTransfer;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use DB;
 
 class TransactionController extends Controller
 {
@@ -48,9 +49,13 @@ class TransactionController extends Controller
         $totalGameRevenuesQuery = clone $query;
         $totalGameRevenues = $totalGameRevenuesQuery->sum('GAME_TOTAL_REVENUE');
 
+        $totalStakeQuery = clone $query;
+        $totalStake = $totalStakeQuery->get([DB::raw("SUM((LENGTH(GAME_PLAYERS) - LENGTH(REPLACE(GAME_PLAYERS, '/', '')) + 1) * GAME_ENTRY_FEE) as TotalStake")]);
+
         $paginate = $query->paginate($pageSize);
 
         $custom = collect([
+            'totalStake' => $totalStake[0]->TotalStake,
             'totalGames' => $totalGames,
             'totalTournaments' => $totalTournaments,
             'totalGameRevenues' => $totalGameRevenues
