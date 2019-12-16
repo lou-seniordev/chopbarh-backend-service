@@ -76,7 +76,8 @@ class DepositsController extends Controller
 
 
         $rules = [
-            'amount' => 'required|string',
+            'id' => 'required|string',
+            'amount' => 'required|integer',
             'channel' => 'required|string',
             'customer_id' => 'required|string',
             'deposit_date' => 'required|string',
@@ -87,10 +88,10 @@ class DepositsController extends Controller
             'refId' => 'required|string',
             'rownum' => 'required|integer',
             'status' => 'required|string',
-            'time_seconds' => 'required|datetime',
-            'time_nanoseconds' => 'required|datetime',
+            'time_seconds' => 'required|string',
+            'time_nanoseconds' => 'required|string',
             'transaction_fees' => 'required|integer',
-            'transaction_reference '=> 'required|string'
+            'transaction_reference'=> 'required|string'
         ];
 
 
@@ -108,6 +109,7 @@ class DepositsController extends Controller
 
 
             $deposit = Deposits::create([
+                'id' => $request->id,
                 'amount' => $request->amount,
                 'channel' => $request->channel,
                 'customer_id' => $request->customer_id,
@@ -119,8 +121,8 @@ class DepositsController extends Controller
                 'refId' => $request->refId,
                 'rownum' => $request->rownum,
                 'status' => $request->status,
-                'time_seconds' => $request->time_seconds,
-                'time_nanoseconds' => $request->time_nanoseconds,
+                'timeseconds' => $request->time_seconds,
+                'timenanoseconds' => $request->time_nanoseconds,
                 'transaction_fees' => $request->transaction_fees,
                 'transaction_reference'=> $request->transaction_reference
             ]);

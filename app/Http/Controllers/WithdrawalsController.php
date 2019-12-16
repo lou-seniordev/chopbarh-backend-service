@@ -70,16 +70,17 @@ class WithdrawalsController extends Controller
 
 
         $rules = [
-            'amount' => 'required|string',
+            'id' => 'required|string',
+            'playerId' => 'required|string',
+            'amount' => 'required|integer',
             'channel' => 'required|string',
             'gameTransactionId' => 'required|string',
             'paid_at' => 'required|string',
-            'playerId' => 'required|string',
             'status' => 'required|string',
-            'time_seconds' => 'required|datetime',
-            'time_nanoseconds' => 'required|datetime',
+            'time_seconds' => 'required|string',
+            'time_nanoseconds' => 'required|string',
             'transaction_fee' => 'required|integer',
-            'transaction_reference '=> 'required|string',
+            'transaction_reference'=> 'required|string',
             'withdrawal_date' => 'required|string',
         ];
 
@@ -98,6 +99,7 @@ class WithdrawalsController extends Controller
 
 
             $withdrawal = Withdrawals::create([
+                'id' => $request->id,
                 'amount' => $request->amount,
                 'channel' => $request->channel,
                 'gameTransactionId' => $request->gameTransactionId,

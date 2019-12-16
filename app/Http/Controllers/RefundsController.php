@@ -70,16 +70,17 @@ class RefundsController extends Controller
 
 
         $rules = [
-            'amount' => 'required|string',
+            'id' => 'required|string',
+            'playerId' => 'required|string',
+            'amount' => 'required|integer',
             'bank' => 'required|string',
             'gameTransactionId' => 'required|string',
             'paid_at' => 'required|string',
-            'playerId' => 'required|string',
             'refund_date' => 'required|string',
             'status' => 'required|string',
-            'time_seconds' => 'required|datetime',
-            'time_nanoseconds' => 'required|datetime',
-            'transaction_reference '=> 'required|string'
+            'time_seconds' => 'required|string',
+            'time_nanoseconds' => 'required|string',
+            'transaction_reference'=> 'required|string',
         ];
 
 
@@ -95,13 +96,13 @@ class RefundsController extends Controller
 
         }else {
 
-
             $refund = Refunds::create([
+                'id' => $request->id,
+                'playerId' => $request->playerId,
                 'amount' => $request->amount,
                 'bank' => $request->bank,
                 'gameTransactionId' => $request->gameTransactionId,
                 'paid_at' => $request->paid_at,
-                'playerId' => $request->playerId,
                 'refund_date' => $request->refund_date,
                 'status' => $request->status,
                 'time_seconds' => $request->time_seconds,
