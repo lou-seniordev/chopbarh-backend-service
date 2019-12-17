@@ -29,7 +29,8 @@ class RefundsController extends Controller
 
     public function search(Request $request)
     {
-        $query = $request->get('query');
+        $input = $request->json()->all();
+        $query = $input['query'];
 
         $deposits = DB::table('refunds')->where('playerId', 'like', '%'.$query.'%')
             ->orWhere('amount','LIKE','%'.$query.'%')
@@ -68,6 +69,7 @@ class RefundsController extends Controller
             'message' => ""
         ];
 
+        $input = $request->json()->all();
 
         $rules = [
             'id' => 'required|string',
@@ -84,7 +86,7 @@ class RefundsController extends Controller
         ];
 
 
-        $validator = Validator::make((array)$request->all(), $rules);
+        $validator = Validator::make((array)$input, $rules);
 
         if ($validator->fails()) {
 
@@ -97,17 +99,17 @@ class RefundsController extends Controller
         }else {
 
             $refund = Refunds::create([
-                'id' => $request->id,
-                'playerId' => $request->playerId,
-                'amount' => $request->amount,
-                'bank' => $request->bank,
-                'gameTransactionId' => $request->gameTransactionId,
-                'paid_at' => $request->paid_at,
-                'refund_date' => $request->refund_date,
-                'status' => $request->status,
-                'time_seconds' => $request->time_seconds,
-                'time_nanoseconds' => $request->time_nanoseconds,
-                'transaction_reference'=> $request->transaction_reference
+                'id' => $request['id'],
+                'playerId' => $request['playerId'],
+                'amount' => $request['amount'],
+                'bank' => $request['bank'],
+                'gameTransactionId' => $request['gameTransactionId'],
+                'paid_at' => $request['paid_at'],
+                'refund_date' => $request['refund_date'],
+                'status' => $request['status'],
+                'time_seconds' => $request['time_seconds'],
+                'time_nanoseconds' => $request['time_nanoseconds'],
+                'transaction_reference'=> $request['transaction_reference']
             ]);
 
 

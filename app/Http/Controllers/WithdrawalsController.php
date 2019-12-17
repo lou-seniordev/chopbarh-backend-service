@@ -28,7 +28,8 @@ class WithdrawalsController extends Controller
 
     public function search(Request $request)
     {
-        $query = $request->get('query');
+        $input = $request->json()->all();
+        $query = $input['query'];
 
         $deposits = DB::table('withdrawals')->where('playerId', 'like', '%'.$query.'%')
             ->orWhere('amount','LIKE','%'.$query.'%')
@@ -68,6 +69,7 @@ class WithdrawalsController extends Controller
             'message' => ""
         ];
 
+        $input = $request->json()->all();
 
         $rules = [
             'id' => 'required|string',
@@ -85,7 +87,7 @@ class WithdrawalsController extends Controller
         ];
 
 
-        $validator = Validator::make((array)$request->all(), $rules);
+        $validator = Validator::make((array)$input, $rules);
 
         if ($validator->fails()) {
 
@@ -99,18 +101,18 @@ class WithdrawalsController extends Controller
 
 
             $withdrawal = Withdrawals::create([
-                'id' => $request->id,
-                'amount' => $request->amount,
-                'channel' => $request->channel,
-                'gameTransactionId' => $request->gameTransactionId,
-                'paid_at' => $request->paid_at,
-                'playerId' => $request->playerId,
-                'status' => $request->status,
-                'time_seconds' => $request->time_seconds,
-                'time_nanoseconds' => $request->time_nanoseconds,
-                'transaction_fee' => $request->transaction_fee,
-                'transaction_reference'=> $request->transaction_reference,
-                'withdrawal_date'=> $request->withdrawal_date
+                'id' => $request['id'],
+                'amount' => $request['amount'],
+                'channel' => $request['channel'],
+                'gameTransactionId' => $request['gameTransactionId'],
+                'paid_at' => $request['paid_at'],
+                'playerId' => $request['playerId'],
+                'status' => $request['status'],
+                'time_seconds' => $request['time_seconds'],
+                'time_nanoseconds' => $request['time_nanoseconds'],
+                'transaction_fee' => $request['transaction_fee'],
+                'transaction_reference'=> $request['transaction_reference'],
+                'withdrawal_date'=> $request['withdrawal_date']
             ]);
 
 

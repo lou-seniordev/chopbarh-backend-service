@@ -31,7 +31,8 @@ class DepositsController extends Controller
 
     public function search(Request $request)
     {
-        $query = $request->get('query');
+        $input = $request->json()->all();
+        $query = $input['query'];
 
         $deposits = DB::table('deposits')->where('playerId', 'like', '%'.$query.'%')
             ->orWhere('amount','LIKE','%'.$query.'%')
@@ -74,6 +75,7 @@ class DepositsController extends Controller
             'message' => ""
         ];
 
+        $input = $request->json()->all();
 
         $rules = [
             'id' => 'required|string',
@@ -95,7 +97,7 @@ class DepositsController extends Controller
         ];
 
 
-        $validator = Validator::make((array)$request->all(), $rules);
+        $validator = Validator::make((array)$input, $rules);
 
         if ($validator->fails()) {
 
@@ -109,22 +111,22 @@ class DepositsController extends Controller
 
 
             $deposit = Deposits::create([
-                'id' => $request->id,
-                'amount' => $request->amount,
-                'channel' => $request->channel,
-                'customer_id' => $request->customer_id,
-                'deposit_date' => $request->deposit_date,
-                'gameTransactionId' => $request->gameTransactionId,
-                'gateway' => $request->gateway,
-                'paid_at' => $request->paid_at,
-                'playerId' => $request->playerId,
-                'refId' => $request->refId,
-                'rownum' => $request->rownum,
-                'status' => $request->status,
-                'timeseconds' => $request->time_seconds,
-                'timenanoseconds' => $request->time_nanoseconds,
-                'transaction_fees' => $request->transaction_fees,
-                'transaction_reference'=> $request->transaction_reference
+                'id' => $input['id'],
+                'amount' => $input['amount'],
+                'channel' => $input['channel'],
+                'customer_id' => $input['customer_id'],
+                'deposit_date' => $input['deposit_date'],
+                'gameTransactionId' => $input['gameTransactionId'],
+                'gateway' => $input['gateway'],
+                'paid_at' => $input['paid_at'],
+                'playerId' => $input['playerId'],
+                'refId' => $input['refId'],
+                'rownum' => $input['rownum'],
+                'status' => $input['status'],
+                'timeseconds' => $input['time_seconds'],
+                'timenanoseconds' => $input['time_nanoseconds'],
+                'transaction_fees' => $input['transaction_fees'],
+                'transaction_reference'=> $input['transaction_reference']
             ]);
 
 
