@@ -127,12 +127,36 @@ class LiaisonAgentController extends Controller
         return response()->json($result, $statusCode);
     }
 
-    public function list() {
+    public function list(Request $request) {
         $result = array();
+        $statusCode = Response::HTTP_OK;
 
-        $result['status'] = true;
-        $result['data'] = LiaisonAgent::with(['child_agents', 'parent_agent'])->get();
+        try {
+            $request->validate([
+                'id' => 'required',
+                'token' => 'required'
+            ]);
 
-        return response()->json($result);
+            $liaisonAgent = LiaisonAgent::findOrFail($request->id);
+
+            if ($liaisonAgent->token == $request->token) {
+                $result['status'] = true;
+                $result['data'] = LiaisonAgent::with(['child_agents', 'parent_agent'])->get();
+            } else {
+                $result['status'] = false;
+                $result['message'] = "You are not authorized";
+                $statusCode = Response::HTTP_UNAUTHORIZED;
+            }
+        } catch (ValidationException $exception) {
+            $result['status'] = false;
+            $result['message'] = $exception->errors();
+            $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+        } catch (ModelNotFoundException $exception) {
+            $result['status'] = false;
+            $result['message'] = "Agent record not found";
+            $statusCode = Response::HTTP_NOT_FOUND;
+        }
+
+        return response()->json($result, $statusCode);
     }
 }

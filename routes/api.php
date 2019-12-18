@@ -29,5 +29,5 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('liaison/register', 'LiaisonAgentController@register');
     Route::post('liaison/register/{parent}', 'LiaisonAgentController@registerChild');
     Route::post('liaison/login', 'LiaisonAgentController@login');
-    Route::get('liaison/list', 'LiaisonAgentController@list');
+    Route::post('liaison/list', 'LiaisonAgentController@list');
 });
