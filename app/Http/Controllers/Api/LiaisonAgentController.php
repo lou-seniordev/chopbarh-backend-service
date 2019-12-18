@@ -43,7 +43,7 @@ class LiaisonAgentController extends Controller
             $result['data'] = $liaisonAgent;
             $result['message'] = "Liaison Agent successfully created";
         } catch (ValidationException $exception) {
-            $result['success'] = false;
+            $result['status'] = false;
             $result['message'] = $exception->errors();
             $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
         }
@@ -78,13 +78,50 @@ class LiaisonAgentController extends Controller
             $result['data'] = $liaisonAgent;
             $result['message'] = "Liaison Agent successfully created";
         } catch (ValidationException $exception) {
-            $result['success'] = false;
+            $result['status'] = false;
             $result['message'] = $exception->errors();
             $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
         } catch (ModelNotFoundException $exception) {
-            $result['success'] = false;
+            $result['status'] = false;
             $result['message'] = "Could not find parent agent";
             $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+        }
+
+        return response()->json($result, $statusCode);
+    }
+
+    public function login(Request $request) {
+        $result = array();
+        $statusCode = Response::HTTP_OK;
+
+        try {
+            $request->validate([
+                'phone_number' => 'required',
+                'password' => 'required'
+            ]);
+
+            $liaisonAgent = LiaisonAgent::where('phone_number', $request->phone_number)->firstOrFail();
+
+            if ($liaisonAgent->generated_password == $request->password) {
+                $result['success'] = true;
+
+                $result['data'] = [
+                    'id' => $liaisonAgent->id,
+                    'token' => $liaisonAgent->token
+                ];
+            } else {
+                $result['status'] = false;
+                $result['message'] = "You could not be logged in because of an error";
+                $statusCode = Response::HTTP_UNAUTHORIZED;
+            }
+        } catch (ValidationException $exception) {
+            $result['status'] = false;
+            $result['message'] = $exception->errors();
+            $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+        } catch (ModelNotFoundException $exception) {
+            $result['status'] = false;
+            $result['message'] = "Agent record not found";
+            $statusCode = Response::HTTP_NOT_FOUND;
         }
 
         return response()->json($result, $statusCode);
