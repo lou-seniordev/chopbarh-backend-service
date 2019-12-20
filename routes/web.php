@@ -43,6 +43,8 @@ Route::group([
 Route::get('api/deposits/get', 'DepositsController@index');
 Route::get('api/deposits/search', 'DepositsController@search');
 Route::post('api/deposits/add', 'DepositsController@store');
+Route::put('api/deposits/update/{id}', 'DepositsController@update');
+
 Route::get('api/refunds/get', 'RefundsController@index');
 Route::get('api/refunds/search', 'RefundsController@search');
 Route::post('api/refunds/add', 'RefundsController@store');

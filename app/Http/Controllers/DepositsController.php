@@ -179,25 +179,27 @@ class DepositsController extends Controller
 
         $deposit = Deposits::find($id);
 
+        $input = $request->json()->all();
 
         $rules = [
-            'amount_Mod' => 'required|string',
+            'amount_Mod' => 'required|integer',
             'channel_Mod' => 'required|string',
             'customer_id_Mod' => 'required|string',
             'deposit_date_Mod' => 'required|string',
-            'gameTransactionId_Mod' => 'required|string',
+            'gameTransactionId_Mod' => 'string',
             'gateway_Mod' => 'required|string',
             'paid_at_Mod' => 'required|string',
             'playerId_Mod' => 'required|string',
             'refId_Mod' => 'required|string',
-            'rownum_Mod' => 'required|integer',
+            'rownum_Mod' => 'integer',
             'status_Mod' => 'required|string',
-            'time_Mod' => 'required|datetime',
+            'time_seconds_Mod' => 'string',
+            'time_nanoseconds_Mod' => 'string',
             'transaction_fees_Mod' => 'required|integer',
             'transaction_reference_Mod'=> 'required|string'
         ];
 
-        $validator = Validator::make((array)$request->all(), $rules);
+        $validator = Validator::make((array)$input, $rules);
 
         if ($validator->fails()) {
 
@@ -210,20 +212,19 @@ class DepositsController extends Controller
         } else {
 
             $deposit->update([
-                'amount' =>  (isset($request->amount_Mod)) ? $request->amount_Mod : $deposit->amount,
-                'channel' => (isset($request->channel_Mod)) ? $request->channel_Mod : $deposit->channel,
-                'customer_id' => (isset($request->customer_id_Mod)) ? $request->customer_id_Mod : $deposit->customer_id,
-                'deposit_date' => (isset($request->deposit_date_Mod)) ? $request->deposit_date_Mod : $deposit->deposit_date,
-                'gameTransactionId' => (isset($request->gameTransactionId_Mod)) ? $request->gameTransactionId_Mod : $deposit->gameTransactionId,
-                'gateway' => (isset($request->gateway_Mod)) ? $request->gateway_Mod : $deposit->gateway,
-                'paid_at' => (isset($request->paid_at_Mod)) ? $request->paid_at_Mod : $deposit->paid_at,
-                'playerId' => (isset($request->playerId_Mod)) ? $request->playerId_Mod : $deposit->playerId,
-                'refId' => (isset($request->refId_Mod)) ? $request->refId_Mod : $deposit->refId,
-                'rownum' => (isset($request->rownum_Mod)) ? $request->rownum_Mod : $deposit->rownum,
-                'status' => (isset($request->status_Mod)) ? $request->status_Mod : $deposit->status,
-                'time' => (isset($request->time_Mod)) ? $request->time_Mod : $deposit->time,
-                'transaction_fees' => (isset($request->transaction_fees_Mod)) ? $request->transaction_fees_Mod : $deposit->transaction_fees,
-                'transaction_reference'=> (isset($request->transaction_reference_Mod)) ? $request->transaction_reference_Mod : $deposit->transaction_reference,
+                'amount' =>  (isset($input['amount_Mod'])) ? $input['amount_Mod'] : $deposit->amount,
+                'channel' => (isset($input['channel_Mod'])) ? $input['channel_Mod'] : $deposit->channel,
+                'customer_id' => (isset($input['customer_id_Mod'])) ? $input['customer_id_Mod'] : $deposit->customer_id,
+                'deposit_date' => (isset($input['deposit_date_Mod'])) ? $input['deposit_date_Mod'] : $deposit->deposit_date,
+                'gameTransactionId' => (isset($input['gameTransactionId_Mod'])) ? $input['gameTransactionId_Mod'] : $deposit->gameTransactionId,
+                'gateway' => (isset($input['gateway_Mod'])) ? $input['gateway_Mod'] : $deposit->gateway,
+                'paid_at' => (isset($input['paid_at_Mod'])) ? $input['paid_at_Mod'] : $deposit->paid_at,
+                'playerId' => (isset($input['playerId_Mod'])) ? $input['playerId_Mod'] : $deposit->playerId,
+                'refId' => (isset($input['refId_Mod'])) ? $input['refId_Mod'] : $deposit->refId,
+                'status' => (isset($input['status_Mod'])) ? $input['status_Mod'] : $deposit->status,
+                'transaction_fees' => (isset($input['transaction_fees_Mod'])) ? $input['transaction_fees_Mod'] : $deposit->transaction_fees,
+                'transaction_reference'=> (isset($input['transaction_reference_Mod'])) ? $input['transaction_reference_Mod'] : $deposit->transaction_reference
+
             ]);
 
 
