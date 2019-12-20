@@ -25,4 +25,9 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('transactions/game', 'TransactionController@game')->name('api/transactions/game');
     Route::get('transactions/game/played', 'TransactionController@gamePlayed')->name('api/transactions/game/played');
     Route::get('transactions/transfer', 'TransactionController@transfer')->name('api/transactions/transfer');
+
+    Route::post('liaison/register', 'LiaisonAgentController@register');
+    Route::post('liaison/register/{parent}', 'LiaisonAgentController@registerChild');
+    Route::post('liaison/login', 'LiaisonAgentController@login');
+    Route::post('liaison/list', 'LiaisonAgentController@list');
 });
