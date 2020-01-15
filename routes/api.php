@@ -18,6 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => ['cors']], function () {
+    Route::post('player/get', 'PlayerController@get')->name('api/player/get');
     Route::get('players', 'PlayerController@index')->name('api/players');
     Route::get('players/total', 'PlayerController@total')->name('api/players/total');
     Route::get('players/active', 'PlayerController@active')->name('api/players/active');

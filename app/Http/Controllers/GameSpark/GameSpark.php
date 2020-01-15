@@ -189,4 +189,40 @@ trait GameSpark
         }
     }
 
+    private function getPlayer($phone) {
+        $eventKey = 'ANALYTICS_PLAYER_DATA_VIA_PHONE';
+
+        $client = new GuzzleHttp\Client();
+
+        $form = array(
+            '@class' => '.LogEventRequest',
+            'eventKey' => $eventKey,
+            'playerId' =>  env('GAMESPARK_PLAYER_ID', ''),
+            'PHONE_NUM' => $phone
+        );
+
+        try {
+            $response = $client->post('https://Y376891fcBvk.live.gamesparks.net/rs/debug/lz53ZTZDy60nxL9nXbJDvnYzSN8YYCJN/LogEventRequest',
+                [
+                    GuzzleHttp\RequestOptions::JSON => $form
+                ],
+                [
+                    'Content-Type' => 'application/json'
+                ]);
+
+            if ($response->getStatusCode() == 200) {
+                $result = json_decode($response->getBody());
+
+                $data = $result->scriptData->results;
+
+                if (sizeof($data) > 0) return $data[0];
+                else return null;
+            } else {
+                return ['error' => 'GameSpark not connected'];
+            }
+        } catch (GuzzleException $e) {
+            return ['error' => 'Network not connected', 'detail' => $e->getMessage()];
+        }
+    }
+
 }
