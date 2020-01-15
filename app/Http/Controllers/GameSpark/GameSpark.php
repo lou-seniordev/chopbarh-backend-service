@@ -225,4 +225,77 @@ trait GameSpark
         }
     }
 
+    private function editPlayer($full_name, $dob, $sex, $email) {
+        $eventKey = 'PLAYER_PROFILE_UPDATE';
+
+        $client = new GuzzleHttp\Client();
+
+        $form = array(
+            '@class' => '.LogEventRequest',
+            'eventKey' => $eventKey,
+            'playerId' =>  env('GAMESPARK_PLAYER_ID', ''),
+            'FULL_NAME' => $full_name,
+            'DOB' => $dob,
+            'SEX' => $sex,
+            'Email' => $email
+        );
+
+        try {
+            $response = $client->post('https://Y376891fcBvk.live.gamesparks.net/rs/debug/lz53ZTZDy60nxL9nXbJDvnYzSN8YYCJN/LogEventRequest',
+                [
+                    GuzzleHttp\RequestOptions::JSON => $form
+                ],
+                [
+                    'Content-Type' => 'application/json'
+                ]);
+
+            if ($response->getStatusCode() == 200) {
+                $result = json_decode($response->getBody());
+
+                if (isset($result->error)) return false;
+                else return true;
+            } else {
+                return false;
+            }
+        } catch (GuzzleException $e) {
+            return false;
+        }
+    }
+
+    private function changePlayerPin($old_pin, $new_pin) {
+        $eventKey = 'REGISTER_CHANGE_PASSWORD';
+
+        $client = new GuzzleHttp\Client();
+
+        $form = array(
+            '@class' => '.LogEventRequest',
+            'eventKey' => $eventKey,
+            'playerId' =>  env('GAMESPARK_PLAYER_ID', ''),
+            'OLD' => $old_pin,
+            'NEW' => $new_pin
+        );
+
+        try {
+            $response = $client->post('https://Y376891fcBvk.live.gamesparks.net/rs/debug/lz53ZTZDy60nxL9nXbJDvnYzSN8YYCJN/LogEventRequest',
+                [
+                    GuzzleHttp\RequestOptions::JSON => $form
+                ],
+                [
+                    'Content-Type' => 'application/json'
+                ]);
+
+            if ($response->getStatusCode() == 200) {
+                $result = json_decode($response->getBody());
+
+                $data = $result->scriptData->result;
+
+                if ($data == "")
+
+                return true;
+            } else
+                return false;
+        } catch (GuzzleException $e) {
+            return false;
+        }
+    }
 }

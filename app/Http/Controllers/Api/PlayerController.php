@@ -52,6 +52,71 @@ class PlayerController extends Controller
             } else {
                 $result['status'] = false;
                 $result['message'] = "Player doesn't exist";
+                $statusCode = Response::HTTP_NOT_FOUND;
+            }
+
+        } catch (ValidationException $exception) {
+            $result['status'] = false;
+            $result['message'] = $exception->errors();
+            $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+        }
+
+        return response()->json($result, $statusCode);
+    }
+
+    public function edit(Request $request) {
+        $result = array();
+        $statusCode = Response::HTTP_OK;
+
+        try {
+            $request->validate([
+                'full_name' => 'required',
+                'dob' => 'required',
+                'sex' => 'required',
+                'email' => 'required|email',
+            ]);
+
+            $response = $this->editPlayer($request->input('full_name'), $request->input('dob'), $request->input('sex'), $request->input('email'));
+
+            if ($response) {
+                $result['status'] = true;
+                $result['message'] = "Profile was successfully updated";
+            } else {
+                $result['status'] = false;
+                $result['message'] = "Action was not carried out due to an error";
+
+                $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+            }
+
+        } catch (ValidationException $exception) {
+            $result['status'] = false;
+            $result['message'] = $exception->errors();
+            $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+        }
+
+        return response()->json($result, $statusCode);
+    }
+
+    public function change_pin(Request $request) {
+        $result = array();
+        $statusCode = Response::HTTP_OK;
+
+        try {
+            $request->validate([
+                'old_pin' => 'required',
+                'new_pin' => 'required'
+            ]);
+
+            $response = $this->changePlayerPin($request->input('old_pin'), $request->input('new_pin'));
+
+            if ($response) {
+                $result['status'] = true;
+                $result['message'] = "Pin was successfully changed";
+            } else {
+                $result['status'] = false;
+                $result['message'] = "Action was not carried out due to an error";
+
+                $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
             }
 
         } catch (ValidationException $exception) {
