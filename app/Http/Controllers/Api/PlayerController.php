@@ -127,4 +127,36 @@ class PlayerController extends Controller
 
         return response()->json($result, $statusCode);
     }
+
+    public function login(Request $request) {
+        $result = array();
+        $statusCode = Response::HTTP_OK;
+
+        try {
+            $request->validate([
+                'phone_number' => 'required',
+                'pin' => 'required'
+            ]);
+
+            $response = $this->loginPlayer($request->input('phone_number'), $request->input('pin'));
+
+            if (isset($response->error)) {
+                $result['status'] = false;
+                $result['message'] = "Request was not processed due to an error";
+
+                $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+            } else {
+                $result['status'] = true;
+                $result['data']['authToken'] = $response->authToken;
+                $result['data']['userId'] = $response->userId;
+            }
+
+        } catch (ValidationException $exception) {
+            $result['status'] = false;
+            $result['message'] = $exception->errors();
+            $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+        }
+
+        return response()->json($result, $statusCode);
+    }
 }

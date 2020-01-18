@@ -270,7 +270,8 @@ trait GameSpark
         $form = array(
             '@class' => '.LogEventRequest',
             'eventKey' => $eventKey,
-            'playerId' =>  env('GAMESPARK_PLAYER_ID', ''),
+            //'playerId' =>  env('GAMESPARK_PLAYER_ID', ''),
+            'playerId' => "5d5ed4835a5f2305222de3ff",
             'OLD' => $old_pin,
             'NEW' => $new_pin
         );
@@ -287,15 +288,44 @@ trait GameSpark
             if ($response->getStatusCode() == 200) {
                 $result = json_decode($response->getBody());
 
-                $data = $result->scriptData->result;
-
-                if ($data == "")
-
-                return true;
+                if (isset($result->scriptData)) return false;
+                else return true;
             } else
                 return false;
         } catch (GuzzleException $e) {
             return false;
+        }
+    }
+
+    private function loginPlayer($phone_number, $pin) {
+        $eventKey = 'REGISTER_CHANGE_PASSWORD';
+
+        $client = new GuzzleHttp\Client();
+
+        $form = array(
+            '@class' => '.AuthenticationRequest',
+            'userName' => $phone_number,
+            'password' => $pin
+        );
+
+        try {
+            $response = $client->post('https://Y376891fcBvk.live.gamesparks.net/rs/debug/lz53ZTZDy60nxL9nXbJDvnYzSN8YYCJN/AuthenticationRequest',
+                [
+                    GuzzleHttp\RequestOptions::JSON => $form
+                ],
+                [
+                    'Content-Type' => 'application/json'
+                ]);
+
+            if ($response->getStatusCode() == 200) {
+                $result = json_decode($response->getBody());
+
+                return $result;
+            } else {
+                return null;
+            }
+        } catch (GuzzleException $e) {
+            return null;
         }
     }
 }
