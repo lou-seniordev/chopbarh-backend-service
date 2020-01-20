@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Refunds extends Model
+class Refund extends Model
 {
     protected $guarded = [];
 }

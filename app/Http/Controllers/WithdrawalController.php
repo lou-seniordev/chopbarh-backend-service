@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Refunds;
+use App\Models\Withdrawal;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Validator;
-
-use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
 
-
-class RefundsController extends Controller
+class WithdrawalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,9 +18,9 @@ class RefundsController extends Controller
     public function index()
     {
         //
-        $refunds = DB::table('refunds')->paginate(50);
+        $withdrawals = DB::table('withdrawals')->paginate(50);
+        print_r(json_encode($withdrawals));
 
-        print_r(json_encode($refunds));
     }
 
     public function search(Request $request)
@@ -32,10 +28,11 @@ class RefundsController extends Controller
         $input = $request->json()->all();
         $query = $input['query'];
 
-        $deposits = DB::table('refunds')->where('playerId', 'like', '%'.$query.'%')
+        $deposits = DB::table('withdrawals')->where('playerId', 'like', '%'.$query.'%')
             ->orWhere('amount','LIKE','%'.$query.'%')
-            ->orWhere('bank','LIKE','%'.$query.'%')
+            ->orWhere('channel','LIKE','%'.$query.'%')
             ->orWhere('status','LIKE','%'.$query.'%')
+            ->orWhere('transaction_fee','LIKE','%'.$query.'%')
             ->orWhere('transaction_reference','LIKE','%'.$query.'%')
             ->orWhere('gameTransactionId','LIKE','%'.$query.'%')
             ->paginate(50);
@@ -75,14 +72,15 @@ class RefundsController extends Controller
             'id' => 'required|string',
             'playerId' => 'required|string',
             'amount' => 'required|integer',
-            'bank' => 'required|string',
+            'channel' => 'required|string',
             'gameTransactionId' => 'required|string',
             'paid_at' => 'required|string',
-            'refund_date' => 'required|string',
             'status' => 'required|string',
             'time_seconds' => 'required|string',
             'time_nanoseconds' => 'required|string',
+            'transaction_fee' => 'required|integer',
             'transaction_reference'=> 'required|string',
+            'withdrawal_date' => 'required|string',
         ];
 
 
@@ -98,23 +96,25 @@ class RefundsController extends Controller
 
         }else {
 
-            $refund = Refunds::create([
+
+            $withdrawal = Withdrawal::create([
                 'id' => $request['id'],
-                'playerId' => $request['playerId'],
                 'amount' => $request['amount'],
-                'bank' => $request['bank'],
+                'channel' => $request['channel'],
                 'gameTransactionId' => $request['gameTransactionId'],
                 'paid_at' => $request['paid_at'],
-                'refund_date' => $request['refund_date'],
+                'playerId' => $request['playerId'],
                 'status' => $request['status'],
                 'time_seconds' => $request['time_seconds'],
                 'time_nanoseconds' => $request['time_nanoseconds'],
-                'transaction_reference'=> $request['transaction_reference']
+                'transaction_fee' => $request['transaction_fee'],
+                'transaction_reference'=> $request['transaction_reference'],
+                'withdrawal_date'=> $request['withdrawal_date']
             ]);
 
 
             $response->id = 1;
-            $response->message = "New refund done.";
+            $response->message = "New withdrawal done.";
 
         }
 
@@ -159,19 +159,20 @@ class RefundsController extends Controller
             'message' => ""
         ];
 
-        $refund = Refunds::find($id);
+        $withdrawal = Withdrawal::find($id);
 
 
         $rules = [
             'amount_Mod' => 'required|string',
-            'bank_Mod' => 'required|string',
+            'channel_Mod' => 'required|string',
             'gameTransactionId_Mod' => 'required|string',
             'paid_at_Mod' => 'required|string',
             'playerId_Mod' => 'required|string',
-            'refund_date_Mod' => 'required|string',
             'status_Mod' => 'required|string',
             'time_Mod' => 'required|datetime',
-            'transaction_reference_Mod'=> 'required|string'
+            'transaction_fee_Mod'=> 'required|integer',
+            'transaction_reference_Mod'=> 'required|string',
+            'withdrawal_date_Mod'=> 'required|string'
         ];
 
         $validator = Validator::make((array)$request->all(), $rules);
@@ -186,16 +187,17 @@ class RefundsController extends Controller
 
         } else {
 
-            $refund->update([
-                'amount' =>  (isset($request->amount_Mod)) ? $request->amount_Mod : $refund->amount,
-                'bank' => (isset($request->bank_Mod)) ? $request->bank_Mod : $refund->bank,
-                'gameTransactionId' => (isset($request->gameTransactionId_Mod)) ? $request->gameTransactionId_Mod : $refund->gameTransactionId,
-                'paid_at' => (isset($request->paid_at_Mod)) ? $request->paid_at_Mod : $refund->paid_at,
-                'playerId' => (isset($request->playerId_Mod)) ? $request->playerId_Mod : $refund->playerId,
-                'refund_date' => (isset($request->refund_date_Mod)) ? $request->refund_date_Mod : $refund->refund_date,
-                'status' => (isset($request->status_Mod)) ? $request->status_Mod : $refund->status,
-                'time' => (isset($request->time_Mod)) ? $request->time_Mod : $refund->time,
-                'transaction_reference'=> (isset($request->transaction_reference_Mod)) ? $request->transaction_reference_Mod : $refund->transaction_reference,
+            $withdrawal->update([
+                'amount' =>  (isset($request->amount_Mod)) ? $request->amount_Mod : $withdrawal->amount,
+                'channel' => (isset($request->channel_Mod)) ? $request->channel_Mod : $withdrawal->channel,
+                'gameTransactionId' => (isset($request->gameTransactionId_Mod)) ? $request->gameTransactionId_Mod : $withdrawal->gameTransactionId,
+                'paid_at' => (isset($request->paid_at_Mod)) ? $request->paid_at_Mod : $withdrawal->paid_at,
+                'playerId' => (isset($request->playerId_Mod)) ? $request->playerId_Mod : $withdrawal->playerId,
+                'status' => (isset($request->status_Mod)) ? $request->status_Mod : $withdrawal->status,
+                'time' => (isset($request->time_Mod)) ? $request->time_Mod : $withdrawal->time,
+                'transaction_fee' => (isset($request->transaction_fee_Mod)) ? $request->transaction_fee_Mod : $withdrawal->transaction_fee,
+                'transaction_reference'=> (isset($request->transaction_reference_Mod)) ? $request->transaction_reference_Mod : $withdrawal->transaction_reference,
+                'withdrawal_date'=> (isset($request->withdrawal_date_Mod)) ? $request->withdrawal_date_Mod : $withdrawal->withdrawal_date
             ]);
 
 
@@ -226,20 +228,20 @@ class RefundsController extends Controller
         ];
 
 
-        $refund = Refunds::find($id);
+        $withdrawal = Withdrawal::find($id);
 
         DB::beginTransaction();
 
         try{
 
 
-            $refund->delete();
+            $withdrawal->delete();
 
             $response = (Object)[
                 'id' => 1,
                 'type' => "success",
                 'title' => "Reussite !!!",
-                'message' => "Refund deleted."
+                'message' => "Withdrawal deleted."
             ];
 
             DB::commit();

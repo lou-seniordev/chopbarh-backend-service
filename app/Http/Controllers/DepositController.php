@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Deposits;
+use App\Models\Deposit;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Validator;
-
-use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
 
 
-class DepositsController extends Controller
+class DepositController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -110,7 +107,7 @@ class DepositsController extends Controller
         }else {
 
 
-            $deposit = Deposits::create([
+            $deposit = Deposit::create([
                 'id' => $input['id'],
                 'amount' => $input['amount'],
                 'channel' => $input['channel'],
@@ -177,7 +174,7 @@ class DepositsController extends Controller
             'message' => ""
         ];
 
-        $deposit = Deposits::find($id);
+        $deposit = Deposit::find($id);
 
         $input = $request->json()->all();
 
@@ -256,7 +253,7 @@ class DepositsController extends Controller
         ];
 
 
-        $deposit = Deposits::find($id);
+        $deposit = Deposit::find($id);
 
         DB::beginTransaction();
 

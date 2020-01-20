@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Withdrawals extends Model
+class Deposit extends Model
 {
     protected $guarded = [];
 }
