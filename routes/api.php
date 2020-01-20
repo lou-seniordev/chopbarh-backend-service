@@ -63,4 +63,10 @@ Route::group(['middleware' => ['cors']], function () {
     ], function() {
         Route::post('/add', 'DepositController@add')->name('api/deposits/add');
     });
+
+    Route::group([
+        'prefix' => 'withdrawals'
+    ], function() {
+        Route::post('/add', 'WithdrawalController@add')->name('api/withdrawals/add');
+    });
 });

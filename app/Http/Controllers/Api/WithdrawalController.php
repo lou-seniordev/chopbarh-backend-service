@@ -8,15 +8,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Deposit;
-
 use App\Http\Controllers\Controller;
+use App\Models\Withdrawal;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use Illuminate\Validation\ValidationException;
 
-class DepositController extends Controller
+class WithdrawalController extends Controller
 {
     public function add(Request $request) {
         $result = array();
@@ -27,22 +26,20 @@ class DepositController extends Controller
                 'amount' => 'required|numeric',
                 'channel' => 'required',
                 'customer_id' => 'required',
-                'deposit_date' => 'required',
+                'withdrawal_date' => 'required',
                 'gameTransactionId' => 'required',
-                'gateway' => 'required',
                 'paid_at' => 'required|numeric',
                 'playerId' => 'required',
-                'refId' => 'required',
                 'status' => 'required',
                 'transaction_fees' => 'required|numeric',
                 'transaction_reference' => 'required'
             ]);
 
-            $deposit = new Deposit();
+            $deposit = new Withdrawal();
             $deposit->fill($request->all());
             if ($deposit->save()) {
                 $result['status'] = true;
-                $result['message'] = "Deposit successfully recorded";
+                $result['message'] = "Withdrawal successfully recorded";
             } else {
                 $result['status'] = false;
                 $result['message'] = "Action was not carried out due to an error";
