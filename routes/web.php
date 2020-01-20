@@ -38,16 +38,3 @@ Route::group([
 ], function () {
     Route::get('/fetchFromGameSpark', 'TransactionController@fetchFromGameSpark')->name('transactions/fetchFromGameSpark');
 });
-
-
-Route::get('api/deposits/get', 'DepositController@index');
-Route::get('api/deposits/search', 'DepositController@search');
-Route::post('api/deposits/add', 'DepositController@store');
-Route::put('api/deposits/update/{id}', 'DepositController@update');
-
-Route::get('api/refunds/get', 'RefundController@index');
-Route::get('api/refunds/search', 'RefundController@search');
-Route::post('api/refunds/add', 'RefundController@store');
-Route::get('api/withdrawals/get', 'WithdrawalController@index');
-Route::get('api/withdrawals/search', 'WithdrawalController@search');
-Route::post('api/withdrawals/add', 'WithdrawalController@store');

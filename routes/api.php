@@ -18,20 +18,49 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => ['cors']], function () {
-    Route::post('player/login', 'PlayerController@login')->name('api/player/login');
-    Route::post('player/get', 'PlayerController@get')->name('api/player/get');
-    Route::post('player/edit', 'PlayerController@edit')->name('api/player/edit');
-    Route::post('player/change/pin', 'PlayerController@change_pin')->name('api/player/change/pin');
-    Route::get('players', 'PlayerController@index')->name('api/players');
-    Route::get('players/total', 'PlayerController@total')->name('api/players/total');
-    Route::get('players/active', 'PlayerController@active')->name('api/players/active');
-    Route::get('tran_players', 'TranPlayerController@index')->name('api/tran_players');
-    Route::get('transactions/game', 'TransactionController@game')->name('api/transactions/game');
-    Route::get('transactions/game/played', 'TransactionController@gamePlayed')->name('api/transactions/game/played');
-    Route::get('transactions/transfer', 'TransactionController@transfer')->name('api/transactions/transfer');
+    Route::group([
+        'prefix' => 'player'
+    ], function() {
+        Route::post('/login', 'PlayerController@login')->name('api/player/login');
+        Route::post('/get', 'PlayerController@get')->name('api/player/get');
+        Route::post('/edit', 'PlayerController@edit')->name('api/player/edit');
+        Route::post('/change/pin', 'PlayerController@change_pin')->name('api/player/change/pin');
+    });
 
-    Route::post('liaison/register', 'LiaisonAgentController@register');
-    Route::post('liaison/register/{parent}', 'LiaisonAgentController@registerChild');
-    Route::post('liaison/login', 'LiaisonAgentController@login');
-    Route::post('liaison/list', 'LiaisonAgentController@list');
+    Route::group([
+        'prefix' => 'players'
+    ], function() {
+        Route::get('/', 'PlayerController@index')->name('api/players');
+        Route::get('/total', 'PlayerController@total')->name('api/players/total');
+        Route::get('/active', 'PlayerController@active')->name('api/players/active');
+    });
+
+    Route::group([
+        'prefix' => 'transactions'
+    ], function() {
+        Route::get('/game', 'TransactionController@game')->name('api/transactions/game');
+        Route::get('/game/played', 'TransactionController@gamePlayed')->name('api/transactions/game/played');
+        Route::get('/transfer', 'TransactionController@transfer')->name('api/transactions/transfer');
+    });
+
+    Route::group([
+        'prefix' => 'tran_players'
+    ], function() {
+        Route::get('/', 'TranPlayerController@index')->name('api/tran_players');
+    });
+
+    Route::group([
+        'prefix' => 'liaison'
+    ], function() {
+        Route::post('/register', 'LiaisonAgentController@register');
+        Route::post('/register/{parent}', 'LiaisonAgentController@registerChild');
+        Route::post('/login', 'LiaisonAgentController@login');
+        Route::post('/list', 'LiaisonAgentController@list');
+    });
+
+    Route::group([
+        'prefix' => 'deposits'
+    ], function() {
+        Route::post('/add', 'DepositController@add')->name('api/deposits/add');
+    });
 });
