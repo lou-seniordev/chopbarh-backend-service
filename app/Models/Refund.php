@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Refund extends Model
 {
-    protected $guarded = [];
+    public $fillable = [
+        'amount', 'bank', 'customer_id', 'refund_date', 'gameTransactionId',
+        'paid_at', 'playerId', 'status', 'transaction_reference'
+    ];
 }

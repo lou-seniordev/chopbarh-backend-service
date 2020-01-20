@@ -69,4 +69,10 @@ Route::group(['middleware' => ['cors']], function () {
     ], function() {
         Route::post('/add', 'WithdrawalController@add')->name('api/withdrawals/add');
     });
+
+    Route::group([
+        'prefix' => 'refunds'
+    ], function() {
+        Route::post('/add', 'RefundController@add')->name('api/refunds/add');
+    });
 });
