@@ -298,8 +298,6 @@ trait GameSpark
     }
 
     private function loginPlayer($phone_number, $pin) {
-        $eventKey = 'REGISTER_CHANGE_PASSWORD';
-
         $client = new GuzzleHttp\Client();
 
         $form = array(
@@ -326,6 +324,72 @@ trait GameSpark
             }
         } catch (GuzzleException $e) {
             return null;
+        }
+    }
+
+    private function updatePlayerCoin($amount, $playerId, $condition) {
+        $eventKey = 'PLAYER_COINS_UPDATE';
+
+        $client = new GuzzleHttp\Client();
+
+        $form = array(
+            '@class' => '.LogEventRequest',
+            'eventKey' => $eventKey,
+            'playerId' => $playerId,
+            'Coins' => $amount,
+            'Condition' => $condition
+        );
+
+        try {
+            $response = $client->post('https://Y376891fcBvk.live.gamesparks.net/rs/debug/lz53ZTZDy60nxL9nXbJDvnYzSN8YYCJN/LogEventRequest',
+                [
+                    GuzzleHttp\RequestOptions::JSON => $form
+                ],
+                [
+                    'Content-Type' => 'application/json'
+                ]);
+
+            if ($response->getStatusCode() == 200) {
+                $result = json_decode($response->getBody());
+
+                return $result;
+            } else
+                return false;
+        } catch (GuzzleException $e) {
+            return false;
+        }
+    }
+
+    private function updatePlayerCash($amount, $playerId, $condition) {
+        $eventKey = 'PLAYER_CASH_UPDATE';
+
+        $client = new GuzzleHttp\Client();
+
+        $form = array(
+            '@class' => '.LogEventRequest',
+            'eventKey' => $eventKey,
+            'playerId' => $playerId,
+            'Cash' => $amount,
+            'Condition' => $condition
+        );
+
+        try {
+            $response = $client->post('https://Y376891fcBvk.live.gamesparks.net/rs/debug/lz53ZTZDy60nxL9nXbJDvnYzSN8YYCJN/LogEventRequest',
+                [
+                    GuzzleHttp\RequestOptions::JSON => $form
+                ],
+                [
+                    'Content-Type' => 'application/json'
+                ]);
+
+            if ($response->getStatusCode() == 200) {
+                $result = json_decode($response->getBody());
+
+                return $result;
+            } else
+                return false;
+        } catch (GuzzleException $e) {
+            return false;
         }
     }
 }

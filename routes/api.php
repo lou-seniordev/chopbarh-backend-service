@@ -25,6 +25,8 @@ Route::group(['middleware' => ['cors', 'check_api_key']], function () {
         Route::post('/get', 'PlayerController@get')->name('api/player/get');
         Route::post('/edit', 'PlayerController@edit')->name('api/player/edit');
         Route::post('/change/pin', 'PlayerController@change_pin')->name('api/player/change/pin');
+        Route::post('/update/coin', 'PlayerController@update_coin')->name('api/player/update/coin');
+        Route::post('/update/cash', 'PlayerController@update_cash')->name('api/player/update/cash');
     });
 
     Route::group([

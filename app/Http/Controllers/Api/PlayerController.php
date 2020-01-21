@@ -159,4 +159,66 @@ class PlayerController extends Controller
 
         return response()->json($result, $statusCode);
     }
+
+    public function update_coin(Request $request) {
+        $result = array();
+        $statusCode = Response::HTTP_OK;
+
+        try {
+            $request->validate([
+                'amount' => 'required|numeric',
+                'playerId' => 'required',
+                'condition' => 'required'
+            ]);
+
+            $response = $this->updatePlayerCoin($request->input('amount'), $request->input('playerId'), $request->input('condition'));
+
+            if (isset($response->error)) {
+                $result['status'] = false;
+                $result['message'] = "Request was not processed due to an error";
+
+                $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+            } else {
+                $result['status'] = true;
+                $result['data'] = $response->scriptData->Result;
+            }
+        } catch (ValidationException $exception) {
+            $result['status'] = false;
+            $result['message'] = $exception->errors();
+            $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+        }
+
+        return response()->json($result, $statusCode);
+    }
+
+    public function update_cash(Request $request) {
+        $result = array();
+        $statusCode = Response::HTTP_OK;
+
+        try {
+            $request->validate([
+                'amount' => 'required|numeric',
+                'playerId' => 'required',
+                'condition' => 'required'
+            ]);
+
+            $response = $this->updatePlayerCash($request->input('amount'), $request->input('playerId'), $request->input('condition'));
+
+            if (isset($response->error)) {
+                $result['status'] = false;
+                $result['message'] = "Request was not processed due to an error";
+
+                $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+            } else {
+                $result['status'] = true;
+                $result['data'] = $response->scriptData->Result;
+            }
+        } catch (ValidationException $exception) {
+            $result['status'] = false;
+            $result['message'] = $exception->errors();
+            $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+        }
+
+        return response()->json($result, $statusCode);
+    }
 }
