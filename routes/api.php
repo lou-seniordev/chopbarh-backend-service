@@ -75,4 +75,24 @@ Route::group(['middleware' => ['cors']], function () {
     ], function() {
         Route::post('/add', 'RefundController@add')->name('api/refunds/add');
     });
+
+    Route::group([
+        'prefix' => 'cards'
+    ], function() {
+        Route::post('/paystack/add', 'PaystackController@add_card')->name('api/cards/paystack/add');
+        Route::post('/rave/add', 'RaveController@add_card')->name('api/cards/rave/add');
+    });
+
+    Route::group([
+        'prefix' => 'banks'
+    ], function() {
+        Route::post('/paystack/add', 'PaystackController@add_bank')->name('api/banks/paystack/add');
+    });
+
+    Route::group([
+        'prefix' => 'accounts'
+    ], function() {
+        Route::post('/payment/add', 'AccountController@add_payment')->name('api/accounts/payment/add');
+        Route::post('/withdrawal/add', 'AccountController@add_withdrawal')->name('api/accounts/withdrawal/add');
+    });
 });
