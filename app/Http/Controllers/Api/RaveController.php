@@ -23,7 +23,7 @@ class RaveController extends Controller
 
         try {
             $request->validate([
-                'auth_code' => 'required',
+                'auth_code' => 'required|unique:rave_cards',
                 'card_type' => 'required',
                 'email' => 'required',
                 'expiry' => 'required',

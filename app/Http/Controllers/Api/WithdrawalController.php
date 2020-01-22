@@ -32,7 +32,7 @@ class WithdrawalController extends Controller
                 'playerId' => 'required',
                 'status' => 'required',
                 'transaction_fees' => 'required|numeric',
-                'transaction_reference' => 'required'
+                'transaction_reference' => 'required|unique:withdrawals'
             ]);
 
             $deposit = new Withdrawal();

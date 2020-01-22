@@ -26,7 +26,7 @@ class AccountController extends Controller
 
         try {
             $request->validate([
-                'account_number' => 'required',
+                'account_number' => 'required|unique:payment_accounts',
                 'bank_name' => 'required',
                 'playerId' => 'required'
             ]);
@@ -56,7 +56,7 @@ class AccountController extends Controller
 
         try {
             $request->validate([
-                'account_number' => 'required',
+                'account_number' => 'required|unique:withdrawal_accounts',
                 'bank_name' => 'required',
                 'bank_code' => 'required',
                 'playerId' => 'required'

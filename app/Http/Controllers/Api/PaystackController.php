@@ -25,7 +25,7 @@ class PaystackController extends Controller
 
         try {
             $request->validate([
-                'auth_code' => 'required',
+                'auth_code' => 'required|unique:paystack_cards',
                 'card_type' => 'required',
                 'cvv' => 'required',
                 'expiry_month' => 'required',
@@ -59,7 +59,7 @@ class PaystackController extends Controller
 
         try {
             $request->validate([
-                'auth_code' => 'required',
+                'auth_code' => 'required|unique:paystack_banks',
                 'account_number' => 'required',
                 'bank' => 'required',
                 'bank_code' => 'required',

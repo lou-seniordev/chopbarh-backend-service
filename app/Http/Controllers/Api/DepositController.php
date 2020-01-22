@@ -32,9 +32,9 @@ class DepositController extends Controller
                 'gateway' => 'required',
                 'paid_at' => 'required|numeric',
                 'playerId' => 'required',
-                'refId' => 'required',
+                'refId' => 'required|unique:deposits',
                 'status' => 'required',
-                'transaction_fees' => 'required|numeric',
+                'transaction_fees' => 'required|numeric|unique:deposits',
                 'transaction_reference' => 'required'
             ]);
 

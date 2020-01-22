@@ -31,7 +31,7 @@ class RefundController extends Controller
                 'paid_at' => 'required|numeric',
                 'playerId' => 'required',
                 'status' => 'required',
-                'transaction_reference' => 'required'
+                'transaction_reference' => 'required|unique:refunds'
             ]);
 
             $deposit = new Refund();
