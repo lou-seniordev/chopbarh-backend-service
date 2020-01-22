@@ -15,7 +15,7 @@ class CreatePaystackCardsTable extends Migration
     {
         Schema::create('paystack_cards', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('auth_code');
+            $table->string('auth_code')->unique();
             $table->string('card_type');
             $table->string('cvv');
             $table->string('expiry_month');

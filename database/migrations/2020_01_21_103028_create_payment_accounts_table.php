@@ -15,7 +15,7 @@ class CreatePaymentAccountsTable extends Migration
     {
         Schema::create('payment_accounts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('account_number');
+            $table->string('account_number')->unique();
             $table->string('bank_name');
             $table->string('playerId');
             $table->timestamps();

@@ -15,7 +15,7 @@ class CreatePaystackBanksTable extends Migration
     {
         Schema::create('paystack_banks', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('auth_code');
+            $table->string('auth_code')->unique();
             $table->string('account_number');
             $table->string('bank');
             $table->string('bank_code');

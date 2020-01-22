@@ -23,7 +23,7 @@ class CreateRefundsTable extends Migration
             $table->dateTimeTz('refund_date');
             $table->string('gameTransactionId');
             $table->string('playerId');
-            $table->string('transaction_reference');
+            $table->string('transaction_reference')->unique();
             $table->string('status');
             $table->bigInteger('paid_at');
             $table->timestamps();

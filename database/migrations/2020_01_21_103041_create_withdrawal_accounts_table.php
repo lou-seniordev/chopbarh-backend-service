@@ -15,7 +15,7 @@ class CreateWithdrawalAccountsTable extends Migration
     {
         Schema::create('withdrawal_accounts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('account_number');
+            $table->string('account_number')->unique();
             $table->string('bank_name');
             $table->string('bank_code');
             $table->string('playerId');

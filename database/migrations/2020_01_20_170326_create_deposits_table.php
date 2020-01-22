@@ -22,9 +22,9 @@ class CreateDepositsTable extends Migration
             $table->string('gameTransactionId');
             $table->string('gateway');
             $table->string('playerId');
-            $table->string('refId');
+            $table->string('refId')->unique();
             $table->integer('transaction_fees');
-            $table->string('transaction_reference');
+            $table->string('transaction_reference')->unique();
             $table->string('status');
             $table->bigInteger('paid_at');
             $table->timestamps();

@@ -15,7 +15,7 @@ class CreateRaveCardsTable extends Migration
     {
         Schema::create('rave_cards', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('auth_code');
+            $table->string('auth_code')->unique();
             $table->string('card_type');
             $table->string('email');
             $table->string('expiry');

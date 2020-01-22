@@ -22,7 +22,7 @@ class CreateWithdrawalsTable extends Migration
             $table->string('gameTransactionId');
             $table->string('playerId');
             $table->integer('transaction_fees');
-            $table->string('transaction_reference');
+            $table->string('transaction_reference')->unique();
             $table->string('status');
             $table->bigInteger('paid_at');
             $table->timestamps();
