@@ -199,7 +199,7 @@ class PlayerController extends Controller
             $request->validate([
                 'amount' => 'required|numeric',
                 'playerId' => 'required',
-                'condition' => 'required|in:0,2'
+                'condition' => 'required|in:0,1,2'
             ]);
 
             $response = $this->updatePlayerCash($request->input('amount'), $request->input('playerId'), $request->input('condition'));
