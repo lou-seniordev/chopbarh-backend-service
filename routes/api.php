@@ -94,6 +94,8 @@ Route::group(['middleware' => ['cors', 'check_api_key']], function () {
     Route::group([
         'prefix' => 'accounts'
     ], function() {
+        Route::post('/blacklist/add', 'AccountController@add_blacklist')->name('api/accounts/blacklist/add');
+        Route::post('/super_agent/add', 'AccountController@add_super_agent')->name('api/accounts/super_agent/add');
         Route::post('/payment/add', 'AccountController@add_payment')->name('api/accounts/payment/add');
         Route::post('/withdrawal/add', 'AccountController@add_withdrawal')->name('api/accounts/withdrawal/add');
     });
