@@ -3,14 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\GameSpark\GameSpark;
 use App\Models\TranGame;
 use App\Models\TranTransfer;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Validation\ValidationException;
 use DB;
 
 class TransactionController extends Controller
 {
+    use GameSpark;
+
     public function game()
     {
         //
@@ -72,5 +77,37 @@ class TransactionController extends Controller
             'end' => $end
         ]);
         */
+    }
+
+    public function transfer_agent(Request $request) {
+        $result = array();
+        $statusCode = Response::HTTP_OK;
+
+        try {
+            $request->validate([
+                'amount' => 'required|numeric|between:1,20000',
+                'phone_number' => 'required',
+                'playerId' => 'required',
+                'transaction_reference' => 'required'
+            ]);
+
+            $response = $this->transferAgent($request->input('amount'), $request->input('phone_number'), $request->input('playerId'), $request->input('transaction_reference'));
+
+            if (isset($response->error)) {
+                $result['status'] = false;
+                $result['message'] = $response->error->Error;
+
+                $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+            } else {
+                $result['status'] = true;
+                $result['message'] = "Transaction was successful";
+            }
+        } catch (ValidationException $exception) {
+            $result['status'] = false;
+            $result['message'] = $exception->errors();
+            $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+        }
+
+        return response()->json($result, $statusCode);
     }
 }

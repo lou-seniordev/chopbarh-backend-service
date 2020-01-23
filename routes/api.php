@@ -43,6 +43,8 @@ Route::group(['middleware' => ['cors', 'check_api_key']], function () {
         Route::get('/game', 'TransactionController@game')->name('api/transactions/game');
         Route::get('/game/played', 'TransactionController@gamePlayed')->name('api/transactions/game/played');
         Route::get('/transfer', 'TransactionController@transfer')->name('api/transactions/transfer');
+
+        Route::post('/transfer/agent', 'TransactionController@transfer_agent')->name('api/transactions/transfer/agent');
     });
 
     Route::group([

@@ -392,4 +392,37 @@ trait GameSpark
             return false;
         }
     }
+
+    private function transferAgent($amount, $phoneNumber, $playerId, $transactionReference = null) {
+        $eventKey = 'TRANSFER_CASH';
+
+        $client = new GuzzleHttp\Client();
+
+        $form = array(
+            '@class' => '.LogEventRequest',
+            'eventKey' => $eventKey,
+            "playerId" => $playerId,
+            "AMOUNT"=> $amount,
+            "PHONE_NUM" => $phoneNumber
+        );
+
+        try {
+            $response = $client->post('https://Y376891fcBvk.live.gamesparks.net/rs/debug/lz53ZTZDy60nxL9nXbJDvnYzSN8YYCJN/LogEventRequest',
+                [
+                    GuzzleHttp\RequestOptions::JSON => $form
+                ],
+                [
+                    'Content-Type' => 'application/json'
+                ]);
+
+            if ($response->getStatusCode() == 200) {
+                $result = json_decode($response->getBody());
+
+                return $result;
+            } else
+                return false;
+        } catch (GuzzleException $e) {
+            return false;
+        }
+    }
 }
