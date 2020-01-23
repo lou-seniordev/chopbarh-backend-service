@@ -34,8 +34,8 @@ class DepositController extends Controller
                 'playerId' => 'required',
                 'refId' => 'required|unique:deposits',
                 'status' => 'required',
-                'transaction_fees' => 'required|numeric|unique:deposits',
-                'transaction_reference' => 'required'
+                'transaction_fees' => 'required|numeric',
+                'transaction_reference' => 'required|unique:deposits'
             ]);
 
             $deposit = new Deposit();
