@@ -78,6 +78,7 @@ Route::group(['middleware' => ['cors', 'check_api_key']], function () {
         'prefix' => 'refunds'
     ], function() {
         Route::post('/add', 'RefundController@add')->name('api/refunds/add');
+        Route::post('/dispute', 'RefundController@dispute')->name('api/refunds/dispute');
     });
 
     Route::group([
