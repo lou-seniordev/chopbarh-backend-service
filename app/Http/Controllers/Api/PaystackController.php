@@ -34,15 +34,22 @@ class PaystackController extends Controller
                 'playerId' => 'required'
             ]);
 
-            $card = new PaystackCard();
-            $card->fill($request->all());
-            if ($card->save()) {
-                $result['status'] = true;
-                $result['message'] = "Card successfully added";
-            } else {
+            $existingCount = PaystackCard::where('playerId', $request->input('playerId'))->count();
+            if ($existingCount >= 3) {
                 $result['status'] = false;
-                $result['message'] = "Action was not carried out due to an error";
-                $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+                $result['message'] = "Already have 3 existing cards";
+                $statusCode = Response::HTTP_FORBIDDEN;
+            } else {
+                $card = new PaystackCard();
+                $card->fill($request->all());
+                if ($card->save()) {
+                    $result['status'] = true;
+                    $result['message'] = "Card successfully added";
+                } else {
+                    $result['status'] = false;
+                    $result['message'] = "Action was not carried out due to an error";
+                    $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+                }
             }
         } catch (ValidationException $exception) {
             $result['status'] = false;
@@ -67,15 +74,22 @@ class PaystackController extends Controller
                 'playerId' => 'required'
             ]);
 
-            $bank = new PaystackBank();
-            $bank->fill($request->all());
-            if ($bank->save()) {
-                $result['status'] = true;
-                $result['message'] = "Bank token successfully added";
-            } else {
+            $existingCount = PaystackBank::where('playerId', $request->input('playerId'))->count();
+            if ($existingCount >= 3) {
                 $result['status'] = false;
-                $result['message'] = "Action was not carried out due to an error";
-                $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+                $result['message'] = "Already have 3 existing banks";
+                $statusCode = Response::HTTP_FORBIDDEN;
+            } else {
+                $bank = new PaystackBank();
+                $bank->fill($request->all());
+                if ($bank->save()) {
+                    $result['status'] = true;
+                    $result['message'] = "Bank token successfully added";
+                } else {
+                    $result['status'] = false;
+                    $result['message'] = "Action was not carried out due to an error";
+                    $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+                }
             }
         } catch (ValidationException $exception) {
             $result['status'] = false;

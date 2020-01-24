@@ -31,15 +31,22 @@ class RaveController extends Controller
                 'playerId' => 'required'
             ]);
 
-            $card = new RaveCard();
-            $card->fill($request->all());
-            if ($card->save()) {
-                $result['status'] = true;
-                $result['message'] = "Card successfully added";
-            } else {
+            $existingCount = RaveCard::where('playerId', $request->input('playerId'))->count();
+            if ($existingCount >= 3) {
                 $result['status'] = false;
-                $result['message'] = "Action was not carried out due to an error";
-                $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+                $result['message'] = "Already have 3 existing cards";
+                $statusCode = Response::HTTP_FORBIDDEN;
+            } else {
+                $card = new RaveCard();
+                $card->fill($request->all());
+                if ($card->save()) {
+                    $result['status'] = true;
+                    $result['message'] = "Card successfully added";
+                } else {
+                    $result['status'] = false;
+                    $result['message'] = "Action was not carried out due to an error";
+                    $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+                }
             }
         } catch (ValidationException $exception) {
             $result['status'] = false;

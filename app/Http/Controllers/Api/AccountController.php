@@ -33,15 +33,22 @@ class AccountController extends Controller
                 'playerId' => 'required'
             ]);
 
-            $account = new PaymentAccount();
-            $account->fill($request->all());
-            if ($account->save()) {
-                $result['status'] = true;
-                $result['message'] = "Account successfully added";
-            } else {
+            $existingCount = PaymentAccount::where('playerId', $request->input('playerId'))->count();
+            if ($existingCount >= 1) {
                 $result['status'] = false;
-                $result['message'] = "Action was not carried out due to an error";
-                $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+                $result['message'] = "Already have an existing payment account";
+                $statusCode = Response::HTTP_FORBIDDEN;
+            } else {
+                $account = new PaymentAccount();
+                $account->fill($request->all());
+                if ($account->save()) {
+                    $result['status'] = true;
+                    $result['message'] = "Account successfully added";
+                } else {
+                    $result['status'] = false;
+                    $result['message'] = "Action was not carried out due to an error";
+                    $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+                }
             }
         } catch (ValidationException $exception) {
             $result['status'] = false;
@@ -64,15 +71,22 @@ class AccountController extends Controller
                 'playerId' => 'required'
             ]);
 
-            $account = new WithdrawalAccount();
-            $account->fill($request->all());
-            if ($account->save()) {
-                $result['status'] = true;
-                $result['message'] = "Account successfully recorded";
-            } else {
+            $existingCount = WithdrawalAccount::where('playerId', $request->input('playerId'))->count();
+            if ($existingCount >= 3) {
                 $result['status'] = false;
-                $result['message'] = "Action was not carried out due to an error";
-                $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+                $result['message'] = "Already have 3 existing withdrawal accounts";
+                $statusCode = Response::HTTP_FORBIDDEN;
+            } else {
+                $account = new WithdrawalAccount();
+                $account->fill($request->all());
+                if ($account->save()) {
+                    $result['status'] = true;
+                    $result['message'] = "Account successfully recorded";
+                } else {
+                    $result['status'] = false;
+                    $result['message'] = "Action was not carried out due to an error";
+                    $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+                }
             }
         } catch (ValidationException $exception) {
             $result['status'] = false;
