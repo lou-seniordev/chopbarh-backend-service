@@ -65,7 +65,11 @@ Route::group(['middleware' => ['cors', 'check_api_key', /*'check_hash_mac'*/]], 
     Route::group([
         'prefix' => 'deposits'
     ], function() {
-        Route::post('/add', 'DepositController@add')->name('api/deposits/add');
+        Route::post('/', 'DepositController@add')->name('api/deposits/add');
+        Route::get('/{playerId}', 'DepositController@get')->name('api/deposits/get');
+        Route::put('/', 'DepositController@update')->name('api/deposits/update');
+        Route::patch('/', 'DepositController@update')->name('api/deposits/update');
+        Route::delete('/', 'DepositController@delete')->name('api/deposits/delete');
     });
 
     Route::group([

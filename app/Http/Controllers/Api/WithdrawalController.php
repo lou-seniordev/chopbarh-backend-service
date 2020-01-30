@@ -68,7 +68,15 @@ class WithdrawalController extends Controller
                 'amount' => 'required|numeric|max:50000',
                 'bank_name' => 'required',
                 'phone_number' => 'required',
-                'account_number' => 'required',
+                'account_number' => [
+                    'required',
+                    function ($attribute, $value, $fail) {
+                        $isBlocked = Blacklist::isBlocked($value);
+
+                        if ($isBlocked)
+                            $fail($attribute.' is in the blacklist');
+                    }
+                ],
                 'playerId' => 'required',
                 'bank' => [
                     'required',
@@ -79,23 +87,13 @@ class WithdrawalController extends Controller
                 ]
             ]);
 
+            $response = $this->chopbarhWidthraw($request->all());
 
-            $isBlocked = Blacklist::isBlocked($request->input('account_number'));
-
-            if ($isBlocked) {
-                $result['status'] = false;
-                $result['message'] = "Account is in the blacklist";
-
-                $statusCode = Response::HTTP_FORBIDDEN;
+            if ($response->status) {
+                $result = $response;
             } else {
-                $response = $this->chopbarhWidthraw($request->all());
-
-                if ($response->status) {
-                    $result = $response;
-                } else {
-                    $result = $response;
-                    $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
-                }
+                $result = $response;
+                $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
             }
         } catch (ValidationException $exception) {
             $result['status'] = false;
