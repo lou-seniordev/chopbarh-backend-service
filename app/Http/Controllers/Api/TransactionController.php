@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\GameSpark\GameSpark;
+use App\Http\Controllers\Traits\GameSpark;
 use App\Models\TranGame;
 use App\Models\TranTransfer;
 use Illuminate\Http\Request;
@@ -85,7 +85,7 @@ class TransactionController extends Controller
 
         try {
             $request->validate([
-                'amount' => 'required|numeric|between:1,20000',
+                'amount' => 'required|numeric|max:20000',
                 'phone_number' => 'required',
                 'playerId' => 'required',
                 'transaction_reference' => 'required'

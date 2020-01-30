@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\GameSpark\GameSpark;
+use App\Http\Controllers\Traits\GameSpark;
 use DataTables;
 use App\Models\Player;
 use Illuminate\Http\Request;

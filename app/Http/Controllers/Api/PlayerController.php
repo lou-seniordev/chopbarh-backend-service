@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\GameSpark\GameSpark;
+use App\Http\Controllers\Traits\GameSpark;
 use App\Models\Player;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

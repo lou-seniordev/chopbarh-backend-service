@@ -28,11 +28,10 @@ class RefundController extends Controller
                 'bank' => 'required',
                 'customer_id' => 'required',
                 'refund_date' => 'required',
-                'gameTransactionId' => 'required',
                 'paid_at' => 'required|numeric',
                 'playerId' => 'required',
                 'status' => 'required',
-                'transaction_reference' => 'required|unique:refunds'
+                'transaction_reference' => 'unique:refunds'
             ]);
 
             $refund = new Refund();
@@ -64,11 +63,10 @@ class RefundController extends Controller
                 'bank' => 'required',
                 'customer_id' => 'required',
                 'refund_date' => 'required',
-                'gameTransactionId' => 'required',
                 'paid_at' => 'required|numeric',
                 'playerId' => 'required',
                 'status' => 'required',
-                'transaction_reference' => 'required|unique:disputes'
+                'transaction_reference' => 'unique:disputes'
             ]);
 
             $dispute = new Dispute();

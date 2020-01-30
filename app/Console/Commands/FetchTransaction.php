@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Controllers\GameSpark\GameSpark;
+use App\Http\Controllers\Traits\GameSpark;
 use Illuminate\Console\Command;
 
 class FetchTransaction extends Command

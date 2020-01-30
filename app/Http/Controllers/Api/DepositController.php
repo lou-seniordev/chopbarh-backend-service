@@ -28,14 +28,13 @@ class DepositController extends Controller
                 'channel' => 'required',
                 'customer_id' => 'required',
                 'deposit_date' => 'required',
-                'gameTransactionId' => 'required',
                 'gateway' => 'required',
                 'paid_at' => 'required|numeric',
                 'playerId' => 'required',
                 'refId' => 'required|unique:deposits',
                 'status' => 'required',
                 'transaction_fees' => 'required|numeric',
-                'transaction_reference' => 'required|unique:deposits'
+                'transaction_reference' => 'unique:deposits'
             ]);
 
             $deposit = new Deposit();

@@ -6,7 +6,7 @@
  * Time: 19:50
  */
 
-namespace App\Http\Controllers\GameSpark;
+namespace App\Http\Controllers\Traits;
 
 use App\Models\CronData;
 use App\Models\Player;
