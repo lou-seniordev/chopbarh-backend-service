@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => ['cors', 'check_api_key', /*'check_hash_mac'*/]], function () {
+Route::group(['middleware' => ['cors', 'check_api_key', 'check_hash_mac']], function () {
     Route::group([
         'prefix' => 'player'
     ], function() {
