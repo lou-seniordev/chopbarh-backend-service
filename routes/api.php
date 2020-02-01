@@ -75,8 +75,6 @@ Route::group(['middleware' => ['cors', 'check_api_key']], function () {
     Route::group([
         'prefix' => 'withdrawals'
     ], function() {
-        Route::post('/add', 'WithdrawalController@add')->name('api/withdrawals/add');
-
         Route::post('/', 'WithdrawalController@add')->name('api/withdrawals/add');
         Route::get('/{playerId}', 'WithdrawalController@get')->name('api/withdrawals/get');
         Route::put('/', 'WithdrawalController@update')->name('api/withdrawals/update');
@@ -92,29 +90,41 @@ Route::group(['middleware' => ['cors', 'check_api_key']], function () {
     Route::group([
         'prefix' => 'refunds'
     ], function() {
-        Route::post('/add', 'RefundController@add')->name('api/refunds/add');
+        Route::post('/', 'RefundController@add')->name('api/refunds/add');
+        Route::get('/{playerId}', 'RefundController@get')->name('api/refunds/get');
+
         Route::post('/dispute', 'RefundController@dispute')->name('api/refunds/dispute');
     });
 
     Route::group([
         'prefix' => 'cards'
     ], function() {
-        Route::post('/paystack/add', 'PaystackController@add_card')->name('api/cards/paystack/add');
-        Route::post('/rave/add', 'RaveController@add_card')->name('api/cards/rave/add');
+        Route::post('/paystack', 'PaystackController@add_card')->name('api/cards/paystack/add');
+        Route::get('/paystack/{playerId}', 'PaystackController@list_card')->name('api/cards/paystack/list');
+
+        Route::post('/rave', 'RaveController@add_card')->name('api/cards/rave/add');
+        Route::get('/rave/{playerId}', 'RaveController@list_card')->name('api/cards/rave/list');
     });
 
     Route::group([
         'prefix' => 'banks'
     ], function() {
-        Route::post('/paystack/add', 'PaystackController@add_bank')->name('api/banks/paystack/add');
+        Route::post('/paystack', 'PaystackController@add_bank')->name('api/banks/paystack/add');
+        Route::get('/paystack/{playerId}', 'PaystackController@list_bank')->name('api/banks/paystack/list');
     });
 
     Route::group([
         'prefix' => 'accounts'
     ], function() {
-        Route::post('/blacklist/add', 'AccountController@add_blacklist')->name('api/accounts/blacklist/add');
-        Route::post('/super_agent/add', 'AccountController@add_super_agent')->name('api/accounts/super_agent/add');
-        Route::post('/payment/add', 'AccountController@add_payment')->name('api/accounts/payment/add');
-        Route::post('/withdrawal/add', 'AccountController@add_withdrawal')->name('api/accounts/withdrawal/add');
+        Route::post('/blacklist', 'AccountController@add_blacklist')->name('api/accounts/blacklist/add');
+        Route::get('/blacklist', 'AccountController@list_blacklist')->name('api/accounts/blacklist/list');
+
+        Route::post('/super_agent', 'AccountController@add_super_agent')->name('api/accounts/super_agent/add');
+
+        Route::post('/payment', 'AccountController@add_payment')->name('api/accounts/payment/add');
+        Route::get('/payment/{playerId}', 'AccountController@list_payment')->name('api/accounts/payment/list');
+
+        Route::post('/withdrawal', 'AccountController@add_withdrawal')->name('api/accounts/withdrawal/add');
+        Route::get('/withdrawal/{playerId}', 'AccountController@list_withdrawal')->name('api/accounts/withdrawal/list');
     });
 });

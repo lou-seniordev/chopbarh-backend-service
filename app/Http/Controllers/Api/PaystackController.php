@@ -60,6 +60,17 @@ class PaystackController extends Controller
         return response()->json($result, $statusCode);
     }
 
+    public function list_card($playerId, Request $request) {
+        $pageSize = 15;
+
+        if ($request->has('pageSize')) {
+            $pageSize = $request->pageSize;
+        }
+        $pagedData = PaystackCard::where('playerId', $playerId)->paginate($pageSize);
+
+        return response()->json($pagedData);
+    }
+
     public function add_bank(Request $request) {
         $result = array();
         $statusCode = Response::HTTP_OK;
@@ -98,5 +109,16 @@ class PaystackController extends Controller
         }
 
         return response()->json($result, $statusCode);
+    }
+
+    public function list_bank($playerId, Request $request) {
+        $pageSize = 15;
+
+        if ($request->has('pageSize')) {
+            $pageSize = $request->pageSize;
+        }
+        $pagedData = PaystackBank::where('playerId', $playerId)->paginate($pageSize);
+
+        return response()->json($pagedData);
     }
 }

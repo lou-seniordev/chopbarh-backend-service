@@ -53,6 +53,17 @@ class RefundController extends Controller
         return response()->json($result, $statusCode);
     }
 
+    public function get($playerId, Request $request) {
+        $pageSize = 15;
+
+        if ($request->has('pageSize')) {
+            $pageSize = $request->pageSize;
+        }
+        $pagedData = Refund::where('playerId', $playerId)->paginate($pageSize);
+
+        return response()->json($pagedData);
+    }
+
     public function dispute(Request $request) {
         $result = array();
         $statusCode = Response::HTTP_OK;

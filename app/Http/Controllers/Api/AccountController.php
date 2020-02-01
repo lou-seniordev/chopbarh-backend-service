@@ -59,6 +59,17 @@ class AccountController extends Controller
         return response()->json($result, $statusCode);
     }
 
+    public function list_payment($playerId, Request $request) {
+        $pageSize = 15;
+
+        if ($request->has('pageSize')) {
+            $pageSize = $request->pageSize;
+        }
+        $pagedData = PaymentAccount::where('playerId', $playerId)->paginate($pageSize);
+
+        return response()->json($pagedData);
+    }
+
     public function add_withdrawal(Request $request) {
         $result = array();
         $statusCode = Response::HTTP_OK;
@@ -97,6 +108,17 @@ class AccountController extends Controller
         return response()->json($result, $statusCode);
     }
 
+    public function list_withdrawal($playerId, Request $request) {
+        $pageSize = 15;
+
+        if ($request->has('pageSize')) {
+            $pageSize = $request->pageSize;
+        }
+        $pagedData = WithdrawalAccount::where('playerId', $playerId)->paginate($pageSize);
+
+        return response()->json($pagedData);
+    }
+
     public function add_blacklist(Request $request) {
         $result = array();
         $statusCode = Response::HTTP_OK;
@@ -124,6 +146,17 @@ class AccountController extends Controller
         }
 
         return response()->json($result, $statusCode);
+    }
+
+    public function list_blacklist(Request $request) {
+        $pageSize = 15;
+
+        if ($request->has('pageSize')) {
+            $pageSize = $request->pageSize;
+        }
+        $pagedData = Blacklist::paginate($pageSize);
+
+        return response()->json($pagedData);
     }
 
     public function add_super_agent(Request $request) {

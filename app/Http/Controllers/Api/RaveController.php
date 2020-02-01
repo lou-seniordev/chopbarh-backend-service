@@ -56,4 +56,15 @@ class RaveController extends Controller
 
         return response()->json($result, $statusCode);
     }
+
+    public function list_card($playerId, Request $request) {
+        $pageSize = 15;
+
+        if ($request->has('pageSize')) {
+            $pageSize = $request->pageSize;
+        }
+        $pagedData = RaveCard::where('playerId', $playerId)->paginate($pageSize);
+
+        return response()->json($pagedData);
+    }
 }
