@@ -30,10 +30,13 @@ trait CloudFunction
             );
 
             if ($response->getStatusCode() == 200) {
-                return json_decode($response->getBody());
-            } else return json_decode($response->getBody());
+                return json_decode($response->getBody()->getContents());
+            } else return [
+                'status' => false,
+                'message' => "Action was not carried out due to an error"
+            ];
         } catch (GuzzleException $e) {
-            return ['error' => 'Unknown issue', 'detail' => $e->getMessage()];
+            return ['error' => 'Unknown issue', 'message' => $e->getMessage()];
         }
 
     }

@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => ['cors', 'check_api_key', 'check_hash_mac']], function () {
+Route::group(['middleware' => ['cors', 'check_api_key']], function () {
     Route::group([
         'prefix' => 'player'
     ], function() {
@@ -76,7 +76,17 @@ Route::group(['middleware' => ['cors', 'check_api_key', 'check_hash_mac']], func
         'prefix' => 'withdrawals'
     ], function() {
         Route::post('/add', 'WithdrawalController@add')->name('api/withdrawals/add');
-        Route::post('/withdraw', 'WithdrawalController@withdraw')->name('api/withdrawals/withdraw');
+
+        Route::post('/', 'WithdrawalController@add')->name('api/withdrawals/add');
+        Route::get('/{playerId}', 'WithdrawalController@get')->name('api/withdrawals/get');
+        Route::put('/', 'WithdrawalController@update')->name('api/withdrawals/update');
+        Route::patch('/', 'WithdrawalController@update')->name('api/withdrawals/update');
+        Route::delete('/', 'WithdrawalController@delete')->name('api/withdrawals/delete');
+
+        Route::post('/withdraw', [
+            'middleware' => 'check_hash_mac',
+            'uses' => 'WithdrawalController@withdraw'
+        ])->name('api/withdrawals/withdraw');
     });
 
     Route::group([
