@@ -79,14 +79,6 @@ class WithdrawalController extends Controller
 
             try {
                 $request->validate([
-                    'amount' => 'required|numeric',
-                    'channel' => 'required',
-                    'customer_id' => 'required',
-                    'withdrawal_date' => 'required',
-                    'paid_at' => 'required|numeric',
-                    'playerId' => 'required',
-                    'status' => 'required',
-                    'transaction_fees' => 'required|numeric',
                     'transaction_reference' => 'required|unique:withdrawals,transaction_reference,'.$withdrawal->id.',id'
                 ]);
 

@@ -81,16 +81,7 @@ class DepositController extends Controller
 
             try {
                 $request->validate([
-                    'amount' => 'required|numeric',
-                    'channel' => 'required',
-                    'customer_id' => 'required',
-                    'deposit_date' => 'required',
-                    'gateway' => 'required',
-                    'paid_at' => 'required|numeric',
-                    'playerId' => 'required',
                     'refId' => 'required',
-                    'status' => 'required',
-                    'transaction_fees' => 'required|numeric',
                     'transaction_reference' => 'unique:deposits,transaction_reference,'.$deposit->id.',id'
                 ]);
 
