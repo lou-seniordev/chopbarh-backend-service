@@ -15,14 +15,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
-use Illuminate\Pagination\Paginator;
-
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use App\Http\Controllers\Traits\CloudFunction;
 
 class DepositController extends Controller
 {
+    use CloudFunction;
+
     public function add(Request $request) {
         $result = array();
         $statusCode = Response::HTTP_OK;
@@ -122,6 +121,37 @@ class DepositController extends Controller
             $result['status'] = false;
             $result['message'] = "Not found";
             $statusCode = Response::HTTP_NOT_FOUND;
+        }
+
+        return response()->json($result, $statusCode);
+    }
+
+    public function deposit(Request $request) {
+        $result = array();
+        $statusCode = Response::HTTP_OK;
+
+        try {
+            $request->validate([
+                'token' => 'required',
+                'amount' => 'required|numeric|max:50000',
+                'phone_number' => 'required',
+                'email' => 'required|email',
+                'reference' => 'required',
+                'playerId' => 'required'
+            ]);
+
+            $response = $this->chopbarhDeposit($request->all());
+
+            if (isset($response->status) and $response->status) {
+                $result = $response;
+            } else {
+                $result = $response;
+                $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+            }
+        } catch (ValidationException $exception) {
+            $result['status'] = false;
+            $result['message'] = $exception->errors();
+            $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
         }
 
         return response()->json($result, $statusCode);
