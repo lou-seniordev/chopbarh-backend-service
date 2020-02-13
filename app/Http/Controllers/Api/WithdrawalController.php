@@ -168,4 +168,30 @@ class WithdrawalController extends Controller
 
         return response()->json($result, $statusCode);
     }
+
+    public function search(Request $request) {
+        $result = array();
+        $statusCode = Response::HTTP_OK;
+
+        try {
+            $request->validate([
+                'transaction_reference' => 'required'
+            ]);
+
+            $deposit = Withdrawal::where('transaction_reference', $request->input('transaction_reference'))->firstOrFail();
+
+            $result['status'] = true;
+            $result['data'] = $deposit;
+        } catch (ValidationException $exception) {
+            $result['status'] = false;
+            $result['message'] = $exception->errors();
+            $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+        } catch (ModelNotFoundException $exception) {
+            $result['status'] = false;
+            $result['message'] = "Service could not be reached";
+            $statusCode = Response::HTTP_NOT_FOUND;
+        }
+
+        return response()->json($result, $statusCode);
+    }
 }

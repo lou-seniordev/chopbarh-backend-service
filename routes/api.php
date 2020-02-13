@@ -67,6 +67,7 @@ Route::group(['middleware' => ['cors', 'check_api_key']], function () {
     ], function() {
         Route::post('/', 'DepositController@add')->name('api/deposits/add');
         Route::get('/{playerId}', 'DepositController@get')->name('api/deposits/get');
+        Route::post('/search', 'DepositController@search')->name('api/deposits/search');
         Route::put('/', 'DepositController@update')->name('api/deposits/update');
         Route::patch('/', 'DepositController@update')->name('api/deposits/update');
         Route::delete('/', 'DepositController@delete')->name('api/deposits/delete');
@@ -82,6 +83,7 @@ Route::group(['middleware' => ['cors', 'check_api_key']], function () {
     ], function() {
         Route::post('/', 'WithdrawalController@add')->name('api/withdrawals/add');
         Route::get('/{playerId}', 'WithdrawalController@get')->name('api/withdrawals/get');
+        Route::post('/search', 'WithdrawalController@search')->name('api/withdrawals/search');
         Route::put('/', 'WithdrawalController@update')->name('api/withdrawals/update');
         Route::patch('/', 'WithdrawalController@update')->name('api/withdrawals/update');
         Route::delete('/', 'WithdrawalController@delete')->name('api/withdrawals/delete');

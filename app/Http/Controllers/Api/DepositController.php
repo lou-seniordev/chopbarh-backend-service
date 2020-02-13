@@ -156,4 +156,30 @@ class DepositController extends Controller
 
         return response()->json($result, $statusCode);
     }
+
+    public function search(Request $request) {
+        $result = array();
+        $statusCode = Response::HTTP_OK;
+
+        try {
+            $request->validate([
+                'refId' => 'required'
+            ]);
+
+            $deposit = Deposit::where('refId', $request->input('refId'))->firstOrFail();
+
+            $result['status'] = true;
+            $result['data'] = $deposit;
+        } catch (ValidationException $exception) {
+            $result['status'] = false;
+            $result['message'] = $exception->errors();
+            $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+        } catch (ModelNotFoundException $exception) {
+            $result['status'] = false;
+            $result['message'] = "Service could not be reached";
+            $statusCode = Response::HTTP_NOT_FOUND;
+        }
+
+        return response()->json($result, $statusCode);
+    }
 }
