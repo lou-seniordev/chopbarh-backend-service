@@ -72,6 +72,8 @@ Route::group(['middleware' => ['cors', 'check_api_key']], function () {
         Route::patch('/', 'DepositController@update')->name('api/deposits/update');
         Route::delete('/', 'DepositController@delete')->name('api/deposits/delete');
 
+        Route::post('/dispute', 'DepositController@dispute')->name('api/deposits/dispute');
+
         Route::post('/deposit', [
             'middleware' => 'check_hash_mac',
             'uses' => 'DepositController@deposit'

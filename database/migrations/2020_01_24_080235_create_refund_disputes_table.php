@@ -13,7 +13,7 @@ class CreateDisputesTable extends Migration
      */
     public function up()
     {
-        Schema::create('disputes', function (Blueprint $table) {
+        Schema::create('refund_disputes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('amount');
             $table->string('bank');
@@ -35,6 +35,6 @@ class CreateDisputesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('disputes');
+        Schema::dropIfExists('refund_disputes');
     }
 }

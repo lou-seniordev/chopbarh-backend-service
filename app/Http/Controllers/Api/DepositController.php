@@ -12,6 +12,7 @@ use App\Models\Deposit;
 
 use App\Http\Controllers\Controller;
 
+use App\Models\DepositDispute;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -178,6 +179,40 @@ class DepositController extends Controller
             $result['status'] = false;
             $result['message'] = "Service could not be reached";
             $statusCode = Response::HTTP_NOT_FOUND;
+        }
+
+        return response()->json($result, $statusCode);
+    }
+
+    public function dispute(Request $request) {
+        $result = array();
+        $statusCode = Response::HTTP_OK;
+
+        try {
+            $request->validate([
+                'amount' => 'required|numeric',
+                'channel' => 'required',
+                'customer_id' => 'required',
+                'deposit_date' => 'required',
+                'gateway' => 'required|numeric',
+                'playerId' => 'required',
+                'transaction_reference' => 'unique:deposit_disputes'
+            ]);
+
+            $dispute = new DepositDispute();
+            $dispute->fill($request->all());
+            if ($dispute->save()) {
+                $result['status'] = true;
+                $result['message'] = "Action was successful";
+            } else {
+                $result['status'] = false;
+                $result['message'] = "Action was not carried out due to an error";
+                $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+            }
+        } catch (ValidationException $exception) {
+            $result['status'] = false;
+            $result['message'] = $exception->errors();
+            $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
         }
 
         return response()->json($result, $statusCode);

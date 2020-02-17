@@ -9,7 +9,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Dispute;
+use App\Models\RefundDispute;
 use App\Models\Refund;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -77,10 +77,10 @@ class RefundController extends Controller
                 'paid_at' => 'required|numeric',
                 'playerId' => 'required',
                 'status' => 'required',
-                'transaction_reference' => 'unique:disputes'
+                'transaction_reference' => 'unique:refund_disputes'
             ]);
 
-            $dispute = new Dispute();
+            $dispute = new RefundDispute();
             $dispute->fill($request->all());
             if ($dispute->save()) {
                 $result['status'] = true;
