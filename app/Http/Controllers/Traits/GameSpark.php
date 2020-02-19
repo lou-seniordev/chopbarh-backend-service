@@ -327,7 +327,7 @@ trait GameSpark
         }
     }
 
-    private function updatePlayerCoin($amount, $playerId, $condition) {
+    private function updatePlayerCoin($amount, $playerId, $operation) {
         $eventKey = 'PLAYER_COINS_UPDATE';
 
         $client = new GuzzleHttp\Client();
@@ -336,8 +336,8 @@ trait GameSpark
             '@class' => '.LogEventRequest',
             'eventKey' => $eventKey,
             'playerId' => $playerId,
-            'Coins' => $amount,
-            'Condition' => $condition
+            'CoinAmount' => $amount,
+            'Operation' => $operation
         );
 
         try {
@@ -360,7 +360,7 @@ trait GameSpark
         }
     }
 
-    private function updatePlayerCash($amount, $playerId, $condition) {
+    private function updatePlayerCash($amount, $playerId, $operation) {
         $eventKey = 'PLAYER_CASH_UPDATE';
 
         $client = new GuzzleHttp\Client();
@@ -369,8 +369,8 @@ trait GameSpark
             '@class' => '.LogEventRequest',
             'eventKey' => $eventKey,
             'playerId' => $playerId,
-            'Cash' => $amount,
-            'Condition' => $condition
+            'RealAmount' => $amount,
+            'Operation' => $operation
         );
 
         try {
