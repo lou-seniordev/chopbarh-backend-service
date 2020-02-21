@@ -176,7 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Yajra\DataTables\DataTablesServiceProvider::class,
-	FruitCake\Cors\CorsServiceProvider::class,
+	    FruitCake\Cors\CorsServiceProvider::class,
     ],
 
     /*
