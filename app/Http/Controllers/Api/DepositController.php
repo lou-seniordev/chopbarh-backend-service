@@ -194,7 +194,7 @@ class DepositController extends Controller
                 'channel' => 'required',
                 'customer_id' => 'required',
                 'deposit_date' => 'required',
-                'gateway' => 'required|numeric',
+                'gateway' => 'required',
                 'playerId' => 'required',
                 'transaction_reference' => 'unique:deposit_disputes'
             ]);
