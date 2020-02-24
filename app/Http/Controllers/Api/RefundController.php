@@ -74,7 +74,7 @@ class RefundController extends Controller
                 'bank' => 'required',
                 'customer_id' => 'required',
                 'refund_date' => 'required',
-                'paid_at' => 'required|numeric',
+                'gateway' => 'required',
                 'playerId' => 'required',
                 'status' => 'required',
                 'transaction_reference' => 'unique:refund_disputes'
