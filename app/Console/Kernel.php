@@ -16,7 +16,8 @@ class Kernel extends ConsoleKernel
         //
         Commands\FetchPlayer::class,
         Commands\FetchTransaction::class,
-        Commands\FetchTranPlayer::class
+        Commands\FetchTranPlayer::class,
+        Commands\VerifyTransaction::class
     ];
 
     /**
@@ -30,6 +31,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('gamespark:fetchplayer')->everyMinute();
         $schedule->command('gamespark:fetchtransaction')->everyMinute();
         $schedule->command('gamespark:fetchtranplayer')->everyMinute();
+
+        $schedule->command('cloud:verifytransaction')->everyThirtyMinutes();
     }
 
     /**
