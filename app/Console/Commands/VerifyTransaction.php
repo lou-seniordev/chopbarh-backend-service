@@ -45,7 +45,7 @@ class VerifyTransaction extends Command
         //
         $deposits = Deposit::where('status', 'PENDING')
             ->orderBy('deposit_date')
-            ->limit(10)
+            ->limit(60)
             ->get();
 
         foreach ($deposits as $deposit) {
