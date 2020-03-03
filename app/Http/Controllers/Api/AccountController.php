@@ -171,6 +171,12 @@ class AccountController extends Controller
                 'phone_number' => 'required|unique:super_agents',
                 'gender' => 'required',
                 'DOB' => 'required|date_format:Y-m-d',
+                'address' => 'required',
+                'alternate_phone' => 'required',
+                'city' => 'required',
+                'status' => 'required',
+                'type' => 'required',
+                'description' => 'required',
                 'state' => 'required'
             ]);
 

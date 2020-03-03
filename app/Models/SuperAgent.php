@@ -8,6 +8,7 @@ class SuperAgent extends Model
 {
     //
     public $fillable = [
-        'email', 'first_name', 'last_name', 'phone_number', 'gender', 'DOB', 'state'
+        'email', 'first_name', 'last_name', 'phone_number', 'gender', 'DOB', 'state',
+        'address', 'alternate_phone', 'city', 'status', 'type', 'description',
     ];
 }

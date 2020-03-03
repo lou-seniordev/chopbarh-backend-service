@@ -38,3 +38,12 @@ Route::group([
 ], function () {
     Route::get('/fetchFromGameSpark', 'TransactionController@fetchFromGameSpark')->name('transactions/fetchFromGameSpark');
 });
+
+
+Route::group([
+    'prefix' => 'super_agent'
+], function () {
+    Route::get('/upload', 'SuperAgentController@upload')->name('super_agent/upload');
+    Route::post('/upload_csv', 'SuperAgentController@upload_csv')->name('super_agent/upload_csv');
+    Route::get('/list', 'SuperAgentController@list')->name('super_agent/list');
+});
