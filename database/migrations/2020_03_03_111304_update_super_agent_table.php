@@ -16,11 +16,11 @@ class UpdateSuperAgentTable extends Migration
         Schema::table('super_agents', function (Blueprint $table) {
             //
             $table->string('address');
-            $table->string('alternate_phone');
+            $table->string('alternate_phone')->nullable();
             $table->string('city');
             $table->string('status');
             $table->string('type');
-            $table->string('description');
+            $table->string('description')->nullable();
         });
     }
 
