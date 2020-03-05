@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PaymentAccount;
 use App\Models\SuperAgent;
 use App\Models\WithdrawalAccount;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -198,4 +199,41 @@ class AccountController extends Controller
 
         return response()->json($result, $statusCode);
     }
+
+    public function update_super_agent(Request $request) {
+        $result = array();
+        $statusCode = Response::HTTP_OK;
+
+        try {
+            $request->validate([
+                'phone_number' => 'required',
+                'email' => 'unique:super_agents,email,'.$request->phone_number.',phone_number'
+            ]);
+
+            try {
+                $account = SuperAgent::where('phone_number', $request->input('phone_number'))->firstOrFail();
+
+                $account->fill($request->all());
+                if ($account->update($request->all())) {
+                    $result['status'] = true;
+                    $result['message'] = "Action was successfully carried out";
+                } else {
+                    $result['status'] = false;
+                    $result['message'] = "Action was not carried out due to an error";
+                    $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+                }
+            } catch (ModelNotFoundException $exception) {
+                $result['status'] = false;
+                $result['message'] = "Super agent not found";
+                $statusCode = Response::HTTP_NOT_FOUND;
+            }
+        } catch (ValidationException $exception) {
+            $result['status'] = false;
+            $result['message'] = $exception->errors();
+            $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+        }
+
+        return response()->json($result, $statusCode);
+    }
+
 }

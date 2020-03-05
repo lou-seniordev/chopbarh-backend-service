@@ -129,6 +129,8 @@ Route::group(['middleware' => [/*'cors',*/ 'check_api_key']], function () {
         Route::get('/blacklist', 'AccountController@list_blacklist')->name('api/accounts/blacklist/list');
 
         Route::post('/super_agent', 'AccountController@add_super_agent')->name('api/accounts/super_agent/add');
+        Route::put('/super_agent', 'AccountController@update_super_agent')->name('api/accounts/super_agent/update');
+        Route::patch('/super_agent', 'AccountController@update_super_agent');
 
         Route::post('/payment', 'AccountController@add_payment')->name('api/accounts/payment/add');
         Route::get('/payment/{playerId}', 'AccountController@list_payment')->name('api/accounts/payment/list');
