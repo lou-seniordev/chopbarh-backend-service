@@ -9,7 +9,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Blacklist;
-use App\Models\Deposit;
 
 use App\Http\Controllers\Controller;
 use App\Models\PaymentAccount;
@@ -18,6 +17,8 @@ use App\Models\WithdrawalAccount;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+
+use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Validation\ValidationException;
 
@@ -221,6 +222,41 @@ class AccountController extends Controller
                     $result['status'] = false;
                     $result['message'] = "Action was not carried out due to an error";
                     $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+                }
+            } catch (ModelNotFoundException $exception) {
+                $result['status'] = false;
+                $result['message'] = "Super agent not found";
+                $statusCode = Response::HTTP_NOT_FOUND;
+            }
+        } catch (ValidationException $exception) {
+            $result['status'] = false;
+            $result['message'] = $exception->errors();
+            $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+        }
+
+        return response()->json($result, $statusCode);
+    }
+
+    public function login_super_agent(Request $request) {
+        $result = array();
+        $statusCode = Response::HTTP_OK;
+
+        try {
+            $request->validate([
+                'email' => 'required',
+                'password' => 'required'
+            ]);
+
+            try {
+                $account = SuperAgent::where('email', $request->input('email'))->firstOrFail();
+
+                if (Hash::check($request->input('password'), $account->password)) {
+                    $result['status'] = true;
+                    $result['token'] = $account->token;
+                } else {
+                    $result['status'] = false;
+                    $result['message'] = "Authentication failed";
+                    $statusCode = Response::HTTP_UNAUTHORIZED;
                 }
             } catch (ModelNotFoundException $exception) {
                 $result['status'] = false;

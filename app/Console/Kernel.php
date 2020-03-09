@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\ExpireSuperAgentToken;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -31,6 +32,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('gamespark:fetchplayer')->everyMinute();
         $schedule->command('gamespark:fetchtransaction')->everyMinute();
         $schedule->command('gamespark:fetchtranplayer')->everyMinute();
+
+        $schedule->command('token:expire')->everyMinute();
 
         $schedule->command('cloud:verifytransaction')->everyThirtyMinutes();
     }
